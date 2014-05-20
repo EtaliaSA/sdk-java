@@ -2,78 +2,31 @@
 	<head>
 		<title>
 			<!-- Page title -->
-			Liga: Real pareggia, rimonta compromessa
+			Etalia test title
 		</title>
-		<meta name="md5" content="3b6184267107e99039a91fe8d257249a" />
-		<!-- Author -->
-		<meta name="author" content="RI" />
-		<!-- Writer -->
-		<meta name="writer" />
-		<!-- Keyword -->
-		<meta name="keyword" content="Liga" />
-		<!-- Network Node -->
-		<meta name="network" content="AMZ" />
-		<!-- Priority -->
-		<meta name="priority" content="R" />
-		<!-- Category -->
-		<meta name="category" content="SPR" />
-		<!-- Sub Category -->
-		<meta name="subcategory" content="Liga" />
-		<!-- Addressings -->
-		<meta name="addresses" content="INT" />
-		<!-- Selection -->
-		<meta name="selezione" content="A018" />
-		<!-- Product ID -->
-		<meta name="product-id" content="1311 A018" />
-		<docdata>
-			<!-- News Identifier -->
-			<doc-id id-string="XRS49362" />
-			<!-- Date of issue -->
-			<date.issue norm="2014-05-08 00:03" />
-			<!-- Date of release -->
-			<date.release norm="2014-05-08 00:03" />
-		</docdata>
 	</head>
 	<body>
 		<body.head>
 			<hedline>
 				<hl1>
 					<!-- Title -->
-					Liga: Real pareggia, rimonta compromessa
+					Etalia test title
 				</hl1>
 			</hedline>
 			<byline>
 				<!-- Subtitle -->
-				Blancos a -4 dall'Atletico e a -1 dal Barca a 2 turni dalla fine
+				Etalia test subtitle
 			</byline>
-			<distributor>
-				<org>
-					<!-- Agency -->
-					ANSA
-				</org>
-			</distributor>
-			<dateline>
-				<location>
-					<!-- Significant location -->
-					MADRID
-				</location>
-			</dateline>
 		</body.head>
 		<body.content>
 			<!-- Language -->
 			<lang lang="it" />
 			<block>
 				<!-- photo link list -->
-				<img source="d164fb5700988e558881b720d9d75833.jpg" />
+				<img source="etalia.jpg" />
 				<p>
 					<!-- Text -->
-					(ANSA) - MADRID, 8 MAG - Il Real Madrid compromette le sue
-					chance di vincere il campionato spagnolo pareggiando 1-1 in casa
-					del Valladolid, penultimo in classifica, nel recupero della 36&#47;a
-					giornata. La squadra di Ancelotti, che si è fatta raggiungere al
-					40' della ripresa dopo il gol di Ramos nel primo tempo, a due
-					giornate dal termine sale a quota 84 punti, staccata di una
-					lunghezza dal Barcellona e di quattro dall'Atletico Madrid.
+					Body body body test.
 				</p>
 			</block>
 		</body.content>

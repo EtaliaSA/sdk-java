@@ -15,7 +15,6 @@ public class ScheduledJob implements Runnable {
 		this.dir = dir;
 	}
 
-	@Override
 	public void run() {
 		//TODO: get authentication token
 		String format = ScheduledImport.getProperty(ScheduledImport.PROP_FILE_FORMAT);
