@@ -1,8 +1,13 @@
 package net.etalia.client.utils;
 
+import java.security.MessageDigest;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Utils {
+
+	private final static Logger log = Logger.getLogger(Utils.class.getName());
 
 	public static void assertFalse(String string, boolean b) {
 		if (b) throw new IllegalStateException(string);
@@ -50,8 +55,23 @@ public class Utils {
 	}
 
 	public static void assertNull(String string, Object obj) {
-		// TODO Auto-generated method stub
-		
-	}	
-	
+		assertTrue(string, obj == null);
+	}
+
+	public static String md5(String value) {
+		String digest = null;
+		try {
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			byte[] hash = md.digest(value.getBytes("UTF-8"));
+			StringBuilder sb = new StringBuilder(2*hash.length);
+			for (byte b : hash) {
+				sb.append(String.format("%02x", b&0xff));
+			}
+			digest = sb.toString();
+		} catch(Exception e) {
+			log.log(Level.SEVERE, "Cannot calculate MD5", e);
+		}
+		return digest;
+	}
+
 }
