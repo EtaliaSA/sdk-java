@@ -1,13 +1,13 @@
 package net.etalia.client.domain;
 
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 public class User {
 
 	private String id;
 	private String title;
-	private Map<String, Object> extraData;
+	private Map<String, Object> extraData = new HashMap<String, Object>();
 
 	public String getId() {
 		return id;
@@ -22,8 +22,7 @@ public class User {
 		this.title = title;
 	}
 	public Map<String,Object> getExtraData() {
-		if (this.extraData == null) return Collections.emptyMap();
-		return Collections.unmodifiableMap(this.extraData);
+		return extraData;
 	}
 	@SuppressWarnings("unchecked")
 	public <T> T getExtraData(String name) {
