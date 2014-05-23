@@ -42,7 +42,7 @@ public class ScheduledImport {
 		}
 		String dir = getProperty(PROP_FILES_DIR) != null ? getProperty(PROP_FILES_DIR) : System.getProperty("user.dir");
 		ScheduledJob job = new ScheduledJob(dir);
-		scheduler.scheduleWithFixedDelay(job, 0, 1, TimeUnit.MINUTES);
+		scheduler.scheduleWithFixedDelay(job, 0, 60, TimeUnit.SECONDS);
 	}
 
 }
