@@ -10,10 +10,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import net.etalia.jalia.ObjectMapper;
 import net.etalia.jalia.TypeUtil;
-import net.etalia.client.json.EtaliaObjectMapper;
 import net.etalia.client.utils.Utils;
 import net.etalia.client.http.Call;
 import net.etalia.client.http.Caller.HttpMethod;
@@ -42,7 +42,8 @@ import org.apache.http.util.EntityUtils;
 
 public class HttpClientCall<X> extends Call<X> {
 
-	
+	private final static Logger log = Logger.getLogger(HttpClientCall.class.getName());
+
 	@SuppressWarnings("rawtypes")
 	private HttpClientCaller caller;
 
@@ -93,7 +94,7 @@ public class HttpClientCall<X> extends Call<X> {
 								ub.addParameter(entry.getKey(), convertToString(inval));
 							}
 						} else {
-							ub.addParameter(entry.getKey(), convertToString(value));							
+							ub.addParameter(entry.getKey(), convertToString(value));
 						}
 					}
 					uri = ub.build().toString();
@@ -128,7 +129,7 @@ public class HttpClientCall<X> extends Call<X> {
 							nvp.add(new BasicNameValuePair(name, convertToString(inval)));
 						}
 					} else {
-						nvp.add(new BasicNameValuePair(name, convertToString(value)));							
+						nvp.add(new BasicNameValuePair(name, convertToString(value)));
 					}
 				}
 				payload = URLEncodedUtils.format(nvp, "utf8").getBytes();
@@ -149,7 +150,7 @@ public class HttpClientCall<X> extends Call<X> {
 			}
 			
 			if (!hasParameters() && hasBody()) {
-				message.setHeader(HttpHeaders.CONTENT_TYPE, "application/json; charset=utf-8");				
+				message.setHeader(HttpHeaders.CONTENT_TYPE, "application/json; charset=utf-8");
 			} else {
 				message.setHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded; charset=utf-8");
 			}
@@ -171,6 +172,7 @@ public class HttpClientCall<X> extends Call<X> {
 				payload = EntityUtils.toByteArray(entity);
 				EntityUtils.consumeQuietly(entity);
 			}
+			log.log(Level.FINE, httpCallTrace(message, requestBody, httpresp, payload));
 		} catch (Exception e) {
 			throw new RuntimeException("Error executing HTTP call" + httpCallTrace(message, requestBody, httpresp, null), e);
 		}
