@@ -3,10 +3,8 @@ package net.etalia.client.domain;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Article {
+public class Article extends Entity {
 
-	private String id;
-	private String title;
 	private String subtitle;
 	private String body;
 	private User author;
@@ -20,18 +18,6 @@ public class Article {
 	private String signer;
 	private String originalUrl;
 
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
 	public String getSubtitle() {
 		return subtitle;
 	}

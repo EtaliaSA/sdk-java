@@ -1,21 +1,16 @@
 package net.etalia.client.domain;
 
-public class Publication {
+import java.util.List;
 
-	private String id;
-	private String title;
+public class Publication extends Entity {
 
-	public String getId() {
-		return id;
+	private List<Page> showedPages;
+
+	public List<Page> getShowedPages() {
+		return showedPages;
 	}
-	public void setId(String id) {
-		this.id = id;
-	}
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
+	public void setShowedPages(List<Page> showedPages) {
+		this.showedPages = showedPages;
 	}
 
 }
