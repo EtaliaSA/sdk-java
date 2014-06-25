@@ -4,8 +4,8 @@ import java.util.Locale;
 
 public enum Language {
 
-	IT("it"),
-	EN("en");
+	it("it"),
+	en("en");
 
 	private String isocode; // ISO-639-1
 	private Language(String isocode) {
