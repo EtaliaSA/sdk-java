@@ -29,5 +29,11 @@ public class Entity {
 		if (extraData == null) return null;
 		return (T)extraData.get(name);
 	}
+	public <T> T setExtraData(String name, Object value) {
+		if (extraData == null) extraData = new HashMap<String, Object>();
+		T ret = getExtraData(name);
+		extraData.put(name, value);
+		return ret;
+	}
 
 }
