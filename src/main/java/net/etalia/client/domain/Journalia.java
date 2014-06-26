@@ -6,27 +6,27 @@ import java.util.List;
 
 public class Journalia {
 
-	private List<Section> data = new LinkedList<Section>();
+	private List<Aggregation> data = new LinkedList<Aggregation>();
 
-	public List<Section> getData() {
+	public List<Aggregation> getData() {
 		return data;
 	}
-	public void setData(List<Section> data) {
+	public void setData(List<Aggregation> data) {
 		this.data = data;
 	}
 
-	private class Section extends HashMap<String, Object> {
+	public class Aggregation extends HashMap<String, Object> {
 		private String title;
 		private List<Publication> data;
 	}
 
-	private class Static extends Section {
+	public class SystemAggregation extends Aggregation {
 	}
 
-	private class Stamp extends Section {
+	public class StampAggregation extends Aggregation {
 	}
 
-	private class SuggestedStamp extends Section {
+	public class SuggestedAggregation extends Aggregation {
 	}
 
 }

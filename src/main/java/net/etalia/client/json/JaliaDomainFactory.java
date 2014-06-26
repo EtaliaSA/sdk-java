@@ -14,6 +14,9 @@ import net.etalia.client.domain.PublicationStandard;
 import net.etalia.client.domain.SearchCriteria;
 import net.etalia.client.domain.User;
 import net.etalia.client.domain.UserProfile;
+import net.etalia.client.domain.Journalia.StampAggregation;
+import net.etalia.client.domain.Journalia.SuggestedAggregation;
+import net.etalia.client.domain.Journalia.SystemAggregation;
 import net.etalia.jalia.EntityFactory;
 import net.etalia.jalia.EntityNameProvider;
 import net.etalia.jalia.JsonClassData;
@@ -44,6 +47,9 @@ public class JaliaDomainFactory implements EntityNameProvider, EntityFactory, Js
 		map(SearchCriteria.class, "SearchCriteria");
 		map(User.class, "User");
 		map(UserProfile.class, "UserProfile");
+		map(SystemAggregation.class, "SystemAggregation");
+		map(StampAggregation.class, "StampAggregation");
+		map(SuggestedAggregation.class, "SuggestedAggregation");
 	}
 	
 	private void map(Class<?> clazz, String name) {
