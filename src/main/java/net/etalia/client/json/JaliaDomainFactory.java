@@ -3,13 +3,17 @@ package net.etalia.client.json;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
-
 import net.etalia.client.domain.Article;
+import net.etalia.client.domain.Entity;
+import net.etalia.client.domain.Journalia;
 import net.etalia.client.domain.Media;
-import net.etalia.client.domain.Publication;
+import net.etalia.client.domain.PageQuery;
+import net.etalia.client.domain.PublicationOwner;
+import net.etalia.client.domain.PublicationStamps;
+import net.etalia.client.domain.PublicationStandard;
+import net.etalia.client.domain.SearchCriteria;
 import net.etalia.client.domain.User;
+import net.etalia.client.domain.UserProfile;
 import net.etalia.jalia.EntityFactory;
 import net.etalia.jalia.EntityNameProvider;
 import net.etalia.jalia.JsonClassData;
@@ -31,9 +35,15 @@ public class JaliaDomainFactory implements EntityNameProvider, EntityFactory, Js
 	
 	{
 		map(Article.class, "Article");
+		map(Journalia.class, "Journalia");
 		map(Media.class, "Media");
-		map(Publication.class, "Publication");
+		map(PageQuery.class, "PageQuery");
+		map(PublicationOwner.class, "PublicationOwner");
+		map(PublicationStamps.class, "PublicationStamps");
+		map(PublicationStandard.class, "PublicationStandard");
+		map(SearchCriteria.class, "SearchCriteria");
 		map(User.class, "User");
+		map(UserProfile.class, "UserProfile");
 	}
 	
 	private void map(Class<?> clazz, String name) {
@@ -73,14 +83,10 @@ public class JaliaDomainFactory implements EntityNameProvider, EntityFactory, Js
 	 * Uses {@link Persistent#getId()} to fetch the id.
 	 */
 	public String getId(Object entity, JsonContext context) {
-		if (entity instanceof Article) {
-			return ((Article) entity).getId();
+		if (entity instanceof Entity) {
+			return ((Entity) entity).getId();
 		} else if (entity instanceof Media) {
 			return ((Media) entity).getId();
-		} else if (entity instanceof Publication) {
-			return ((Publication) entity).getId();
-		} else if (entity instanceof User) {
-			return ((User) entity).getId();
 		}
 		return null;
 	}
