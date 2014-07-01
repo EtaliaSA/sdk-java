@@ -37,9 +37,9 @@ public class Validator {
 	 */
 	public static class ValidationMessage {
 		/**
-		 * The field name (as per java beans specification) of the field having a validation issue
+		 * The property name (as per java beans specification) of the property having a validation issue
 		 */
-		public String field;
+		public String property;
 		/**
 		 * The message (usually i18n key) for the user violation
 		 */
@@ -69,7 +69,7 @@ public class Validator {
 	
 	/**
 	 * Validates an object. This method will fully validate the object, all fields in all groups.
-	 * @param bean The bean to validate
+	 * @param bean Bean to validate
 	 * @return A list of ValidationMessage, an empty list if no validation issues are found
 	 */
 	public List<ValidationMessage> validate(Object bean) {
@@ -78,8 +78,8 @@ public class Validator {
 
 	/**
 	 * Validates specific groups of fields for the given object. 
-	 * @param bean The bean to validate
-	 * @param groups The names of the groups to validate
+	 * @param bean Bean to validate
+	 * @param groups Names of groups to validate
 	 * @return A list of ValidationMessage, an empty list if no validation issues are found
 	 */
 	public List<ValidationMessage> validateGroup(Object bean, String... groups) {
@@ -87,12 +87,12 @@ public class Validator {
 	}
 
 	/**
-	 * Validates specific fields for the given object.
-	 * @param bean The bean to validate
-	 * @param fields Name of fields to validate
+	 * Validates specific properties for the given object.
+	 * @param bean Bean to validate
+	 * @param properties Names of properties to validate
 	 * @return A list of ValidationMessage, an empty list if no validation issues are found
 	 */
-	public List<ValidationMessage> validateFields(Object bean, String... fields) {
+	public List<ValidationMessage> validateProperties(Object bean, String... properties) {
 		return null;
 	}
 	
