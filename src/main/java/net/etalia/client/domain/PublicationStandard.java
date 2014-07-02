@@ -7,6 +7,7 @@ public class PublicationStandard extends Publication {
 	private Boolean published;
 	private Long publishedDate;
 	private Boolean free;
+	private User owner;
 
 	public Media getLogo() {
 		return logo;
@@ -37,6 +38,12 @@ public class PublicationStandard extends Publication {
 	}
 	public void setFree(Boolean free) {
 		this.free = free;
+	}
+	public User getOwner() {
+		return owner;
+	}
+	public void setOwner(User owner) {
+		this.owner = owner;
 	}
 
 }
