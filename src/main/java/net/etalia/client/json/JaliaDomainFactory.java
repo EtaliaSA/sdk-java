@@ -19,6 +19,8 @@ import net.etalia.client.domain.PublicationSection;
 import net.etalia.client.domain.PublicationStamps;
 import net.etalia.client.domain.PublicationStandard;
 import net.etalia.client.domain.SearchCriteria;
+import net.etalia.client.domain.StampArticle;
+import net.etalia.client.domain.StampPublication;
 import net.etalia.client.domain.User;
 import net.etalia.client.domain.UserProfile;
 import net.etalia.jalia.EntityFactory;
@@ -56,6 +58,8 @@ public class JaliaDomainFactory implements EntityNameProvider, EntityFactory, Js
 		map(PublicationStamps.class, "PublicationStamps");
 		map(PublicationStandard.class, "PublicationStandard");
 		map(SearchCriteria.class, "SearchCriteria");
+		map(StampArticle.class, "StampArticle");
+		map(StampPublication.class, "StampPublication");
 		map(User.class, "User");
 		map(UserProfile.class, "UserProfile");
 	}

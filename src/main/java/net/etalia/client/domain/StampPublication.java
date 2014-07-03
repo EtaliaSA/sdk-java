@@ -1,6 +1,6 @@
 package net.etalia.client.domain;
 
-public class StampArticle extends Entity {
+public class StampPublication extends Entity {
 
 	private User owner;
 
