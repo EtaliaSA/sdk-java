@@ -10,6 +10,9 @@ public class PaginationList<T> {
 	private List<T> data = new ArrayList<T>();
 	private Pagination pagination = new Pagination();
 
+	public PaginationList() {
+	}
+
 	public PaginationList(int offset, int count) {
 		pagination.offset = offset;
 		pagination.count = count;
