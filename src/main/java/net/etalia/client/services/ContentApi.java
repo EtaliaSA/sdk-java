@@ -3,6 +3,7 @@ package net.etalia.client.services;
 import java.util.Map;
 
 import net.etalia.client.domain.Article;
+import net.etalia.client.domain.Journalia;
 import net.etalia.client.domain.Publication;
 import net.etalia.client.domain.StampArticle;
 import net.etalia.client.domain.User;
@@ -60,6 +61,9 @@ public interface ContentApi {
 	public @ResponseBody @ResponseStatus(HttpStatus.NO_CONTENT) void removeArticle(@PathVariable String articleId);
 
 	// ========== PUBLICATION ==========
+
+	@RequestMapping(value="/journalia", method=RequestMethod.GET)
+	public @ResponseBody Journalia journalia();
 
 	@RequestMapping(value="/publication", method=RequestMethod.POST)
 	public @ResponseBody @ResponseStatus(HttpStatus.CREATED) Publication addPublication(@RequestBody Publication publication);
