@@ -6,6 +6,7 @@ import net.etalia.client.domain.Article;
 import net.etalia.client.domain.Journalia;
 import net.etalia.client.domain.Publication;
 import net.etalia.client.domain.StampArticle;
+import net.etalia.client.domain.StampPublication;
 import net.etalia.client.domain.User;
 
 import org.springframework.http.HttpStatus;
@@ -81,5 +82,16 @@ public interface ContentApi {
 
 	@RequestMapping(value="/user/{userId}/stampArticle", method=RequestMethod.POST)
 	public @ResponseBody @ResponseStatus(HttpStatus.CREATED) StampArticle addStampArticle(@RequestBody Map<String, String> newStamp);
+
+	@RequestMapping(value="/user/{userId}/stampPublication", method=RequestMethod.POST)
+	public @ResponseBody @ResponseStatus(HttpStatus.CREATED) StampPublication addStampPublication(@RequestBody Map<String, String> newStamp);
+
+	@RequestMapping(value="/user/{userId}/stampPublication/{stampId}", method=RequestMethod.DELETE)
+	public @ResponseStatus(HttpStatus.NO_CONTENT) void removeStampPublication(@PathVariable("stampId") String stampId);
+
+	@RequestMapping(value="/user/{userId}/stampPublication/{stampId}/{publicationId}", method=RequestMethod.DELETE)
+	public @ResponseStatus(HttpStatus.NO_CONTENT) void removeStampPublication(
+																	@PathVariable("stampId") String stampId, 
+																	@PathVariable("publicationId") String publicationId);
 
 }
