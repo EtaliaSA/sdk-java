@@ -29,10 +29,10 @@ public interface SearchApi {
 	@RequestMapping(method=GET, value="/publication/last")
 	public @ResponseBody PaginationList<Publication> getLastPublications(
 			@RequestParam(value="offset", required=false) Integer start,
-			@RequestParam(value="count", required=false) Integer count) throws Exception;
+			@RequestParam(value="count", required=false) Integer count);
 
 	@RequestMapping(method=POST, value="/publication/images")
-	public @ResponseBody Map<String,String> getPublicationsImages(@RequestBody List<String> ids) throws Exception;
+	public @ResponseBody Map<String,String> getPublicationsImages(@RequestBody List<String> ids);
 
 	@RequestMapping(value="/suggestions/publication")
 	public @ResponseBody PaginationList<Publication> publicationSuggest(
@@ -48,7 +48,7 @@ public interface SearchApi {
 			@RequestParam(value="count", required=false) Integer count,
 			@RequestParam(value="advertising", required=false) Integer advertising,
 			@RequestParam(value="advertisingWidth", required=false) Integer advertisingWidth,
-			@RequestHeader(value="x-adu", required=false) String userTgt) throws Exception;
+			@RequestHeader(value="x-adu", required=false) String userTgt);
 
 	@RequestMapping(value="/search/inpage/{pid}", method=GET)
 	public @ResponseBody AdvertisedPaginationList<Article> searchArticlesByPage(
@@ -57,12 +57,12 @@ public interface SearchApi {
 			@RequestParam(value="count", required=false) Integer count,
 			@RequestParam(value="advertising", required=false) Integer advertising,
 			@RequestParam(value="advertisingWidth", required=false) Integer advertisingWidth,
-			@RequestHeader(value="x-adu", required=false) String userTgt) throws Exception;
+			@RequestHeader(value="x-adu", required=false) String userTgt);
 
 	@RequestMapping(value="/article/{aid}/similar")
 	public @ResponseBody PaginationList<Article> searchSimilarArticles(
 			@PathVariable(value="aid") String article,
-			@RequestParam(value="count", required=false) Integer count) throws Exception;
+			@RequestParam(value="count", required=false) Integer count);
 
 	@RequestMapping(value="/suggestions/stamp")
 	public @ResponseBody PaginationList<StampArticle> stampSuggest(
@@ -74,14 +74,12 @@ public interface SearchApi {
 	public @ResponseBody PaginationList<Tag> tagSuggest(
 			@RequestParam("q") String q,
 			@RequestParam(value="offset", required=false) Integer offset, 
-			@RequestParam(value="count", required=false) Integer count
-			);
+			@RequestParam(value="count", required=false) Integer count);
 
 	@RequestMapping(value="/suggestions/user")	
 	public @ResponseBody PaginationList<User> userSuggest(
 			@RequestParam("q") String q,
 			@RequestParam(value="offset", required=false) Integer offset, 
-			@RequestParam(value="count", required=false) Integer count
-			);
+			@RequestParam(value="count", required=false) Integer count);
 
 }
