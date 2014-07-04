@@ -8,6 +8,8 @@ import net.etalia.client.domain.Publication;
 import net.etalia.client.domain.StampArticle;
 import net.etalia.client.domain.StampPublication;
 import net.etalia.client.domain.User;
+import net.etalia.client.domain.PaginationList;
+import net.etalia.client.domain.PublicationSection;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -23,6 +26,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public interface ContentApi {
 
 	// ========== USER ==========
+
+	/**
+	 * Enrolls a user
+	 * @param user The user data
+	 * @return "A JSON {id}"
+	 */
+	@RequestMapping(value="/user", method=RequestMethod.POST)
+	public @ResponseBody @ResponseStatus(HttpStatus.CREATED) Map<String,String> addUser(@RequestBody User user);
 
 	/**
 	 * Logs a user in, based on HTTP Header
@@ -93,5 +104,13 @@ public interface ContentApi {
 	public @ResponseStatus(HttpStatus.NO_CONTENT) void removeStampPublication(
 																	@PathVariable("stampId") String stampId, 
 																	@PathVariable("publicationId") String publicationId);
+
+	// ========== PUBLICATIONSECTION ==========
+
+	@RequestMapping(value="/publicationsections", method=RequestMethod.GET)
+	public @ResponseBody PaginationList<PublicationSection> getPublicationSections(
+			@RequestParam(value="lang") String lang,
+			@RequestParam(value="offset", required=false) Integer offset,
+			@RequestParam(value="count", required=false) Integer count);
 
 }
