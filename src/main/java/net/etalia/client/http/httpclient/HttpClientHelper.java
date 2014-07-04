@@ -1,4 +1,4 @@
-package net.etalia.client.http;
+package net.etalia.client.http.httpclient;
 
 import java.util.concurrent.TimeUnit;
 

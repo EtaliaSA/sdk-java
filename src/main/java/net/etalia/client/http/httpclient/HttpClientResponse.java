@@ -1,10 +1,12 @@
-package net.etalia.client.http;
+package net.etalia.client.http.httpclient;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import net.etalia.client.http.Call;
+import net.etalia.client.http.Response;
 import net.etalia.client.json.EtaliaObjectMapper;
 import net.etalia.jalia.BeanJsonDeSer;
 import net.etalia.jalia.JsonDeSer;

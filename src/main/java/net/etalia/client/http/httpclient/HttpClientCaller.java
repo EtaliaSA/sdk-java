@@ -1,6 +1,10 @@
-package net.etalia.client.http;
+package net.etalia.client.http.httpclient;
 
 import java.lang.reflect.Type;
+
+import net.etalia.client.http.Call;
+import net.etalia.client.http.Caller;
+import net.etalia.client.http.Caller.HttpMethod;
 
 import org.apache.http.client.HttpClient;
 

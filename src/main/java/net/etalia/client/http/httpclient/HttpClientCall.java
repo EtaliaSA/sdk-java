@@ -1,4 +1,4 @@
-package net.etalia.client.http;
+package net.etalia.client.http.httpclient;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,12 +13,12 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.etalia.jalia.TypeUtil;
-import net.etalia.client.utils.Utils;
 import net.etalia.client.http.Call;
 import net.etalia.client.http.Caller.HttpMethod;
 import net.etalia.client.http.JsonedException;
 import net.etalia.client.http.Response;
+import net.etalia.client.utils.Utils;
+import net.etalia.jalia.TypeUtil;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -33,6 +33,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.message.BasicLineFormatter;
