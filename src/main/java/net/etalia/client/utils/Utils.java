@@ -1,8 +1,6 @@
 package net.etalia.client.utils;
 
 import java.io.ByteArrayOutputStream;
-import java.io.Closeable;
-import java.io.IOError;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -80,6 +78,9 @@ public class Utils {
         return output.toByteArray();
     }
 	
+    public static String toString(InputStream input) throws IOException {
+    	return new String(toByteArray(input));
+    }
     
     public static void closeQuietly(InputStream c) {
     	try {

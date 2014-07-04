@@ -178,6 +178,10 @@ public class HttpClientCall<X> extends Call<X> {
 		}
 		
 		
+		if (log.isLoggable(Level.FINEST)) {
+			log.finest(httpCallTrace(message, requestBody, httpresp, payload));
+		}
+
 		int statusCode = httpresp.getStatusLine().getStatusCode();
 		if (check && (statusCode < 200 || statusCode > 299)) {
 			Header respContentType = httpresp.getFirstHeader(HttpHeaders.CONTENT_TYPE);
@@ -186,7 +190,6 @@ public class HttpClientCall<X> extends Call<X> {
 				try {
 					readValue = eom.readValue(payload, new TypeUtil.Specific<Map<String,Object>>(){}.type());
 				} catch (Exception e) {
-					e.printStackTrace();
 				}
 				
 				if (readValue != null) throw new JsonedException("Calling\n" + uri + "\nreturned\n" + httpresp.getStatusLine()+ httpCallTrace(message, requestBody, httpresp, payload), readValue, statusCode);
@@ -235,6 +238,7 @@ public class HttpClientCall<X> extends Call<X> {
 				InputStream content = null;
 				try {
 					content = ((HttpEntityEnclosingRequest) msg).getEntity().getContent();
+					trace.append(Utils.toString(content));
 				} catch (IOException e) {
 					trace.append("!! Error while tracing payload\n");
 				} finally {
@@ -254,6 +258,7 @@ public class HttpClientCall<X> extends Call<X> {
 					InputStream content = null;
 					try {
 						content = entity.getContent();
+						trace.append(Utils.toString(content));
 					} catch (IOException e) {
 						trace.append("!! Error while tracing payload\n");
 					} finally {
