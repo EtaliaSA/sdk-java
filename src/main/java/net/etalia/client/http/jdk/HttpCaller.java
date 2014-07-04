@@ -1,0 +1,38 @@
+package net.etalia.client.http.jdk;
+
+import java.lang.reflect.Type;
+
+import net.etalia.client.http.Call;
+import net.etalia.client.http.Caller;
+
+import org.apache.http.client.HttpClient;
+
+public class HttpCaller<Serv> extends Caller<Serv> {
+
+	protected HttpClient httpClient;
+	protected String baseUrl;
+	
+	public HttpCaller(Class<Serv> serviceInterface) {
+		super(serviceInterface);
+	}
+
+	@Override
+	protected <X> Call<X> createCall(Type type, HttpMethod method, String path) {
+		return new HttpCall<X>(this, type, method, path);
+	}
+
+	public void setHttpClient(HttpClient httpClient) {
+		this.httpClient = httpClient;
+	}
+	public HttpClient getHttpClient() {
+		return httpClient;
+	}
+
+	public void setBaseUrl(String baseUrl) {
+		this.baseUrl = baseUrl;
+	}
+	public String getBaseUrl() {
+		return baseUrl;
+	}
+
+}
