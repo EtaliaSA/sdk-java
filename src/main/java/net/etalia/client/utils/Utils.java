@@ -1,5 +1,11 @@
 package net.etalia.client.utils;
 
+import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
+import java.io.IOError;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Collection;
 
 public class Utils {
@@ -53,4 +59,31 @@ public class Utils {
 		assertTrue(string, obj == null);
 	}
 
+	
+	public static int copy(InputStream input, OutputStream output) throws IOException {
+		byte[] buffer = new byte[4096];
+        long count = 0;
+        int n = 0;
+        while (-1 != (n = input.read(buffer))) {
+            output.write(buffer, 0, n);
+            count += n;
+        }
+        if (count > Integer.MAX_VALUE) {
+            return -1;
+        }
+        return (int) count;
+	}
+	
+    public static byte[] toByteArray(InputStream input) throws IOException {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        copy(input, output);
+        return output.toByteArray();
+    }
+	
+    
+    public static void closeQuietly(InputStream c) {
+    	try {
+    		c.close();
+    	} catch (Exception e) {}
+    }
 }

@@ -17,6 +17,7 @@ import net.etalia.client.http.Call;
 import net.etalia.client.http.Caller.HttpMethod;
 import net.etalia.client.http.JsonedException;
 import net.etalia.client.http.Response;
+import net.etalia.client.utils.URIBuilder;
 import net.etalia.client.utils.Utils;
 import net.etalia.jalia.TypeUtil;
 
@@ -33,7 +34,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.message.BasicLineFormatter;
