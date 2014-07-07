@@ -31,7 +31,7 @@ public interface SearchApi {
 			@RequestParam(value="offset", required=false) Integer start,
 			@RequestParam(value="count", required=false) Integer count);
 
-	@RequestMapping(value="/publication/images", method=GET)
+	@RequestMapping(value="/publication/images", method=POST)
 	public @ResponseBody Map<String,String> getPublicationsImages(@RequestBody List<String> ids);
 
 	@RequestMapping(value="/suggestions/publication", method=GET)
