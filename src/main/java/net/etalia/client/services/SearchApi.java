@@ -26,15 +26,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public interface SearchApi {
 
-	@RequestMapping(method=GET, value="/publication/last")
+	@RequestMapping(value="/publication/last", method=GET)
 	public @ResponseBody PaginationList<Publication> getLastPublications(
 			@RequestParam(value="offset", required=false) Integer start,
 			@RequestParam(value="count", required=false) Integer count);
 
-	@RequestMapping(method=POST, value="/publication/images")
+	@RequestMapping(value="/publication/images", method=GET)
 	public @ResponseBody Map<String,String> getPublicationsImages(@RequestBody List<String> ids);
 
-	@RequestMapping(value="/suggestions/publication")
+	@RequestMapping(value="/suggestions/publication", method=GET)
 	public @ResponseBody PaginationList<Publication> publicationSuggest(
 			@RequestParam("q") String q,
 			@RequestParam(value="ownerId", required=false) String ownerId,
@@ -59,27 +59,27 @@ public interface SearchApi {
 			@RequestParam(value="advertisingWidth", required=false) Integer advertisingWidth,
 			@RequestHeader(value="x-adu", required=false) String userTgt);
 
-	@RequestMapping(value="/article/{aid}/similar")
+	@RequestMapping(value="/article/{aid}/similar", method=GET)
 	public @ResponseBody PaginationList<Article> searchSimilarArticles(
 			@PathVariable(value="aid") String article,
 			@RequestParam(value="count", required=false) Integer count);
 
-	@RequestMapping(value="/suggestions/stamp")
+	@RequestMapping(value="/suggestions/stamp", method=GET)
 	public @ResponseBody PaginationList<StampArticle> stampSuggest(
 			@RequestParam("q") String q,
 			@RequestParam(value="offset", required=false) Integer offset,
 			@RequestParam(value="count", required=false) Integer count);
 
-	@RequestMapping(value="/suggestions/tags")
+	@RequestMapping(value="/suggestions/tags", method=GET)
 	public @ResponseBody PaginationList<Tag> tagSuggest(
 			@RequestParam("q") String q,
-			@RequestParam(value="offset", required=false) Integer offset, 
+			@RequestParam(value="offset", required=false) Integer offset,
 			@RequestParam(value="count", required=false) Integer count);
 
-	@RequestMapping(value="/suggestions/user")	
+	@RequestMapping(value="/suggestions/user", method=GET)
 	public @ResponseBody PaginationList<User> userSuggest(
 			@RequestParam("q") String q,
-			@RequestParam(value="offset", required=false) Integer offset, 
+			@RequestParam(value="offset", required=false) Integer offset,
 			@RequestParam(value="count", required=false) Integer count);
 
 }
