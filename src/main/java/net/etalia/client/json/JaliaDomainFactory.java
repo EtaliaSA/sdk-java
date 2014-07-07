@@ -91,8 +91,6 @@ public class JaliaDomainFactory implements EntityNameProvider, EntityFactory, Js
 	public JsonClassData getClassData(Class<?> clazz, JsonContext context) {
 		JsonClassData ret = classDataFactory.getClassData(clazz, context);
 		if (!ret.isNew()) return ret;
-		ret.ignoreGetter("id");
-		ret.ignoreSetter("id");
 		classDataFactory.cache(clazz, ret);
 		return ret;
 	}
