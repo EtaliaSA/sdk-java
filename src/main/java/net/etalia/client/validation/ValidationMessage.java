@@ -1,5 +1,7 @@
 package net.etalia.client.validation;
 
+import java.util.Arrays;
+
 /**
  * Represents a validation message, usually a violation of validation rules.
  */
@@ -16,4 +18,20 @@ public class ValidationMessage {
 	 * Parameters for i18n to the user
 	 */
 	public String[] parameters;
+
+	public ValidationMessage() {}
+	
+	public ValidationMessage(String property, String message, String[] parameters) {
+		this.property = property;
+		this.message = message;
+		this.parameters = parameters;
+	}
+
+	@Override
+	public String toString() {
+		return "ValidationMessage [property=" + property + ", message=" + message + ", parameters=" + Arrays.toString(parameters) + "]";
+	}
+	
+	
+	
 }

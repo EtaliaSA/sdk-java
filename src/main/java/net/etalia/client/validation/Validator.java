@@ -1,7 +1,13 @@
 package net.etalia.client.validation;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -34,12 +40,24 @@ import java.util.Map;
  */
 public class Validator implements Rule {
 
+	private RuleSet rules = null;
+	private Set<String> properties = null;
+	private Set<String> groups = null;
+	
+	public Validator(RuleSet brules) {
+		if (brules != null) {
+			this.rules = brules;
+		} else {
+			this.rules = new RuleSet(); 
+		}
+	}
+	
 	/**
 	 * Adds a rule to this validator.
 	 * @param rule The rule instance.
 	 */
 	public void addRule(Rule rule) {
-		// TODO Auto-generated method stub
+		rules.addRule(rule);
 	}
 	
 	/**
@@ -47,7 +65,11 @@ public class Validator implements Rule {
 	 * @param groups Names of the property groups.
 	 */
 	public void setGroups(String... groups) {
-		// TODO Auto-generated method stub		
+		if (groups.length == 0) {
+			this.groups = null;
+			return;
+		}
+		this.groups = new HashSet<String>(Arrays.asList(groups));
 	}
 	
 	/**
@@ -55,7 +77,11 @@ public class Validator implements Rule {
 	 * @param properties Names of the properties.
 	 */
 	public void setProperties(String... properties) {
-		// TODO Auto-generated method stub		
+		if (properties.length == 0) {
+			this.properties = null;
+			return;
+		}
+		this.properties = new HashSet<String>(Arrays.asList(properties));
 	}
 	
 	/**
@@ -65,8 +91,13 @@ public class Validator implements Rule {
 	 * @return
 	 */
 	public boolean hasProperty(String propertyName) {
-		// TODO Auto-generated method stub
-		return true;
+		if (this.properties == null) return true;
+		return this.properties.contains(propertyName);
+	}
+	
+	public boolean hasGroup(String group) {
+		if (this.groups == null) return true;
+		return this.groups.contains(group);
 	}
 	
 	/**
@@ -75,14 +106,12 @@ public class Validator implements Rule {
 	 * @return A list of ValidationMessage, an empty list if no validation issues are found
 	 */
 	public List<ValidationMessage> validate(Map<String,String> properties) {
-		// TODO Auto-generated method stub
-		return null;
+		return validate(properties, this);
 	}
 	
 	//@Override
 	public List<ValidationMessage> validate(Map<String,String> properties, Validator parent) {
-		// TODO Auto-generated method stub
-		return null;
+		return rules.validate(properties, parent);
 	}
 
 	/**
@@ -92,8 +121,11 @@ public class Validator implements Rule {
 	 * @return A list of ValidationMessage, an empty list if no validation issues are found
 	 */
 	public List<ValidationMessage> validate(String propertyName, String value) {
-		// TODO Auto-generated method stub
-		return null;
+		Validator subv = new Validator(this.rules);
+		subv.setProperties(propertyName);
+		Map<String,String> vals = new HashMap<String, String>();
+		vals.put(propertyName, value);
+		return subv.validate(vals);
 	}
 	
 }
