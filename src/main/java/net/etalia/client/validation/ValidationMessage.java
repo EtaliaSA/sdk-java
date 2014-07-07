@@ -32,6 +32,4 @@ public class ValidationMessage {
 		return "ValidationMessage [property=" + property + ", message=" + message + ", parameters=" + Arrays.toString(parameters) + "]";
 	}
 	
-	
-	
 }
