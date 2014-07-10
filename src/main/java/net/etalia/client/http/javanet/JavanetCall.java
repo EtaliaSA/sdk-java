@@ -185,7 +185,7 @@ public class JavanetCall<Ret> extends Call<Ret> {
 			if (contentTypeHeader != null && contentTypeHeader.indexOf("json") != -1) {
 				Map<String,Object> readValue = null;
 				try {
-					readValue = eom.readValue(payload, new TypeUtil.Specific<Map<String,Object>>(){}.type());
+					readValue = eom.readValue(respPayload, new TypeUtil.Specific<Map<String,Object>>(){}.type());
 				} catch (Exception e) {
 				}
 				
