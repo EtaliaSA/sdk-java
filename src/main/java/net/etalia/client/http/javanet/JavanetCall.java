@@ -180,7 +180,7 @@ public class JavanetCall<Ret> extends Call<Ret> {
 		}
 
 		
-		if (check && (statusCode < 200 || statusCode > 299)) {
+		if (check && !isAcceptable(statusCode)) {
 			String contentTypeHeader = conn.getHeaderField("Content-Type");
 			if (contentTypeHeader != null && contentTypeHeader.indexOf("json") != -1) {
 				Map<String,Object> readValue = null;

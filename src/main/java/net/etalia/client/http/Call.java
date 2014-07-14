@@ -2,6 +2,7 @@ package net.etalia.client.http;
 
 import java.lang.reflect.Type;
 import java.util.Arrays;
+import java.util.BitSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -29,6 +30,28 @@ import net.etalia.client.http.Caller.HttpMethod;
  */
 public abstract class Call<Ret> {
 
+	private static Map<HttpMethod, BitSet> DEFAULT_ACCEPTS = new HashMap<HttpMethod, BitSet>();
+	
+	static {
+		{
+			BitSet bs = new BitSet(600);
+			bs.set(200);
+			DEFAULT_ACCEPTS.put(HttpMethod.GET, bs);
+			DEFAULT_ACCEPTS.put(HttpMethod.POST, bs);
+		}
+		{
+			BitSet bs = new BitSet(600);
+			bs.set(204);
+			DEFAULT_ACCEPTS.put(HttpMethod.PUT, bs);
+			DEFAULT_ACCEPTS.put(HttpMethod.DELETE, bs);
+		}
+		{
+			BitSet bs = new BitSet(600);
+			bs.set(200,299);
+			DEFAULT_ACCEPTS.put(null, bs);
+		}
+	}
+	
 	public static EtaliaObjectMapper eom = new EtaliaObjectMapper(true);
 	
 	protected Set<String> requestFields = new HashSet<String>();
@@ -38,6 +61,8 @@ public abstract class Call<Ret> {
 	protected Map<String, Object> requestParameters = new HashMap<String, Object>();
 	protected Map<String, String> requestHeaders = new HashMap<String, String>();
 	protected byte[] requestBody;
+	
+	protected BitSet accept = null;
 	
 	public Call(Type type, HttpMethod method, String path) {
 		this.returnType = type;
@@ -49,6 +74,30 @@ public abstract class Call<Ret> {
 		if (fields == null) return this;
 		requestFields.addAll(Arrays.asList(fields));
 		return this;
+	}
+	
+	public Call<Ret> accept(int... statusCodes) {
+		if (accept == null) accept = new BitSet(600);
+		for (int sc : statusCodes) accept.set(sc);
+		return this;
+	}
+	
+	public Call<Ret> acceptRange(int from, int to) {
+		if (accept == null) accept = new BitSet(600);
+		accept.set(from, to);
+		return this;
+	}
+	
+	public boolean isAcceptable(int statusCode) {
+		BitSet bs = accept;
+		if (bs == null) {
+			bs = DEFAULT_ACCEPTS.get(this.method);
+		}
+		if (bs == null) {
+			bs = DEFAULT_ACCEPTS.get(null);
+		}
+		if (bs == null) return true;
+		return bs.get(statusCode);
 	}
 	
 	public Response<Ret> execute() {

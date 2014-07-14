@@ -183,7 +183,7 @@ public class HttpClientCall<X> extends Call<X> {
 		}
 
 		int statusCode = httpresp.getStatusLine().getStatusCode();
-		if (check && (statusCode < 200 || statusCode > 299)) {
+		if (check && !isAcceptable(statusCode)) {
 			Header respContentType = httpresp.getFirstHeader(HttpHeaders.CONTENT_TYPE);
 			if (respContentType != null && respContentType.getValue().indexOf("json") != -1) {
 				Map<String,Object> readValue = null;
