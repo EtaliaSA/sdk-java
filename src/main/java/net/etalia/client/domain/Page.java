@@ -1,6 +1,6 @@
 package net.etalia.client.domain;
 
-public class Page extends Entity {
+public abstract class Page extends Entity {
 
 	private Publication publication;
 
