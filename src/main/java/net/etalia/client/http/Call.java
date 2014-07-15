@@ -37,6 +37,7 @@ public abstract class Call<Ret> {
 			BitSet bs = new BitSet(600);
 			bs.set(200);
 			DEFAULT_ACCEPTS.put(HttpMethod.GET, bs);
+			DEFAULT_ACCEPTS.put(HttpMethod.POST, bs);
 		}
 		{
 			BitSet bs = new BitSet(600);
