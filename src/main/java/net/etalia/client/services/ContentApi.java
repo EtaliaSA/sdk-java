@@ -4,12 +4,13 @@ import java.util.Map;
 
 import net.etalia.client.domain.Article;
 import net.etalia.client.domain.Journalia;
+import net.etalia.client.domain.PageExampleSection;
+import net.etalia.client.domain.PaginationList;
 import net.etalia.client.domain.Publication;
+import net.etalia.client.domain.PublicationSection;
 import net.etalia.client.domain.StampArticle;
 import net.etalia.client.domain.StampPublication;
 import net.etalia.client.domain.User;
-import net.etalia.client.domain.PaginationList;
-import net.etalia.client.domain.PublicationSection;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -104,6 +105,14 @@ public interface ContentApi {
 	public @ResponseStatus(HttpStatus.NO_CONTENT) void removeStampPublication(
 																	@PathVariable("stampId") String stampId, 
 																	@PathVariable("publicationId") String publicationId);
+
+	// ========== PAGESECTION ==========
+
+	@RequestMapping(value="/pagesections", method=RequestMethod.GET)
+	public @ResponseBody PaginationList<PageExampleSection> getPageExampleSections(
+			@RequestParam(value="lang") String lang,
+			@RequestParam(value="offset", required=false) Integer offset,
+			@RequestParam(value="count", required=false) Integer count);
 
 	// ========== PUBLICATIONSECTION ==========
 
