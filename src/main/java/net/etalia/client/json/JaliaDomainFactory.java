@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.etalia.client.domain.Article;
+import net.etalia.client.domain.Banner;
 import net.etalia.client.domain.Entity;
 import net.etalia.client.domain.Journalia;
 import net.etalia.client.domain.JournaliaStampAggregation;
@@ -11,6 +12,7 @@ import net.etalia.client.domain.JournaliaSuggestedAggregation;
 import net.etalia.client.domain.JournaliaSystemAggregation;
 import net.etalia.client.domain.Media;
 import net.etalia.client.domain.PageExample;
+import net.etalia.client.domain.PageExampleSection;
 import net.etalia.client.domain.PageLink;
 import net.etalia.client.domain.PageQuery;
 import net.etalia.client.domain.PaginationList;
@@ -44,12 +46,14 @@ public class JaliaDomainFactory implements EntityNameProvider, EntityFactory, Js
 	
 	{
 		map(Article.class, "Article");
+		map(Banner.class, "Banner");
 		map(Journalia.class, "Journalia");
 		map(JournaliaSystemAggregation.class, "SystemAggregation");
 		map(JournaliaStampAggregation.class, "StampAggregation");
 		map(JournaliaSuggestedAggregation.class, "SuggestedAggregation");
 		map(Media.class, "Media");
 		map(PageExample.class, "PageExample");
+		map(PageExampleSection.class, "PageExampleSection");
 		map(PageLink.class, "PageLink");
 		map(PageQuery.class, "PageQuery");
 		map(PaginationList.class, "PaginationList");

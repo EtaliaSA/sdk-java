@@ -22,6 +22,7 @@ import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 
 import net.etalia.client.domain.Article;
 import net.etalia.client.domain.Publication;
+import net.etalia.client.domain.PublicationStandard;
 import net.etalia.client.domain.User;
 import net.etalia.client.http.Caller;
 import net.etalia.client.http.httpclient.HttpClientCaller;
@@ -81,7 +82,7 @@ public class ScheduledJob implements Runnable {
 					}
 					String publicationId = ScheduledImport.getProperty(ScheduledImport.PROP_PUBLICATION);
 					if (publicationId != null) {
-						Publication publication = new Publication();
+						Publication publication = new PublicationStandard();
 						publication.setId(publicationId);
 						article.setPublication(publication);
 					}

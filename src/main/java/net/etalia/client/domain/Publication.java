@@ -2,7 +2,7 @@ package net.etalia.client.domain;
 
 import java.util.List;
 
-public class Publication extends Entity {
+public abstract class Publication extends Entity {
 
 	private List<Page> showedPages;
 
