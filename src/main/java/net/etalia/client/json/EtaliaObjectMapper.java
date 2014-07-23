@@ -29,9 +29,6 @@ public class EtaliaObjectMapper extends ObjectMapper {
 		super.setEntityNameProvider(factory);
 		super.setClassDataFactory(factory);
 		
-		super.setSendNulls(false);
-		super.setSendEmpty(false);
-		
 		super.init();
 	}
 	
