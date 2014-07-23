@@ -54,6 +54,9 @@ public interface ContentApi {
 	@RequestMapping(value="/user/fb", method=RequestMethod.GET)
 	public @ResponseBody User authFBUser(@RequestHeader("Authorization") String authorization);
 
+	@RequestMapping(value="/token/forgotPassword", method=RequestMethod.POST)
+	public @ResponseStatus(HttpStatus.CREATED) void forgotPassword(@RequestBody Map<String, String> data);
+
 	// ========== ARTICLE ==========
 
 	/**
