@@ -7,7 +7,7 @@ public class AdvertisedPaginationList<T> extends PaginationList<T> {
 
 	protected List<Banner> advertising = new LinkedList<Banner>();
 	
-	protected AdvertisedPaginationList() {
+	public AdvertisedPaginationList() {
 		super(0, 0);
 	}
 
