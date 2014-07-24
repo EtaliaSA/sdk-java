@@ -3,6 +3,7 @@ package net.etalia.client.json;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.etalia.client.domain.AdvertisedPaginationList;
 import net.etalia.client.domain.Article;
 import net.etalia.client.domain.Banner;
 import net.etalia.client.domain.Entity;
@@ -45,6 +46,7 @@ public class JaliaDomainFactory implements EntityNameProvider, EntityFactory, Js
 	private Map<String, Class<?>> nameMappingsByName = new HashMap<String, Class<?>>();
 	
 	{
+		map(AdvertisedPaginationList.class, "AdvertisedPaginationList");
 		map(Article.class, "Article");
 		map(Banner.class, "Banner");
 		map(Journalia.class, "Journalia");
