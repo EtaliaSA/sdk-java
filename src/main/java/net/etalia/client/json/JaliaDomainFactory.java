@@ -32,6 +32,7 @@ import net.etalia.jalia.JsonClassData;
 import net.etalia.jalia.JsonClassDataFactory;
 import net.etalia.jalia.JsonClassDataFactoryImpl;
 import net.etalia.jalia.JsonContext;
+import net.etalia.jalia.TypeUtil;
 
 /**
  * Implements Etalia names, entity factory and class data factory.
@@ -115,7 +116,7 @@ public class JaliaDomainFactory implements EntityNameProvider, EntityFactory, Js
 
 	public Object buildEntity(Class<?> clazz, String id, JsonContext context) {
 		try {
-			return clazz.newInstance();
+			return TypeUtil.get(clazz).newInstance();
 		} catch (Exception e) {
 			throw new IllegalStateException(e);
 		}
