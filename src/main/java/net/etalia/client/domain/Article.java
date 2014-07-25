@@ -17,6 +17,7 @@ public class Article extends Entity {
 	private boolean vm18 = false;
 	private String signer;
 	private String originalUrl;
+	private Long updated;
 
 	public String getSubtitle() {
 		return subtitle;
@@ -95,6 +96,12 @@ public class Article extends Entity {
 	}
 	public void setOriginalUrl(String originalUrl) {
 		this.originalUrl = originalUrl;
+	}
+	public Long getUpdated() {
+		return updated;
+	}
+	public void setUpdated(Long updated) {
+		this.updated = updated;
 	}
 
 	public void addMedia(Media media) {
