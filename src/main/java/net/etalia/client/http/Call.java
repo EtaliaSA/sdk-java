@@ -104,6 +104,12 @@ public abstract class Call<Ret> {
 		if (bs == null) return true;
 		return bs.get(statusCode);
 	}
+
+	public Call<Ret> authAsToken(String token) {
+		setHeader("Authorization", "Etalia " + token);
+		return this;
+	}
+		
 	
 	public Response<Ret> execute() {
 		return execute(true);
@@ -195,4 +201,13 @@ public abstract class Call<Ret> {
 		sb.deleteCharAt(sb.length() - 1);
 		return sb.toString();
 	}
+	
+	public HttpMethod getMethod() {
+		return this.method;
+	}
+	
+	public String getPath() {
+		return this.path;
+	}
+	
 }
