@@ -15,14 +15,27 @@ public abstract class Auther {
 	private Map<String,Call<?>> calls = new HashMap<String,Call<?>>();
 	private Map<String,String> inverse = new HashMap<String,String>();
 	protected String token;
+	private Caller<?> caller;
 
-	protected Auther() {}
+	protected Auther(Caller<?> caller) {
+		this.caller = caller;
+	}
 	
 	public Auther addCall(String name, Call<?> call) {
 		calls.put(name, call);
 		return this;
 	}
 	
+	public <X> Auther add(String name, X object) {
+		addCall(name, caller.method(object));
+		return this;
+	}
+	
+	public Auther addVoid(String name) {
+		addCall(name, caller.voidMethod());
+		return this;
+	}
+		
 	public Auther allAsToken(String token) {
 		this.token = token;
 		return this;

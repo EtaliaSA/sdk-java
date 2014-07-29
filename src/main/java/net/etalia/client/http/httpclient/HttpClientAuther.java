@@ -20,6 +20,7 @@ public class HttpClientAuther extends Auther {
 	private HttpClientCaller<?> caller;
 
 	public HttpClientAuther(HttpClientCaller<?> caller) {
+		super(caller);
 		this.caller = caller;
 	}
 	

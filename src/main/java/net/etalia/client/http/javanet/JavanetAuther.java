@@ -17,6 +17,7 @@ public class JavanetAuther extends Auther {
 	private JavanetCaller<?> caller;
 
 	public JavanetAuther(JavanetCaller<?> caller) {
+		super(caller);		
 		this.caller = caller;
 	}
 	
