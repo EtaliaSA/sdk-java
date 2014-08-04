@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import net.etalia.jalia.ObjectMapper;
+import net.etalia.jalia.TypeUtil;
 
 public abstract class Auther {
 
@@ -58,7 +59,7 @@ public abstract class Auther {
 	public abstract Map<String,Boolean> check();
 
 	protected Map<String, Boolean> parseResponse(String resp) {
-		List<Map<String,Object>> pairs = om.readValue(resp, List.class);
+		List<Map<String,Object>> pairs = om.readValue(resp, new TypeUtil.Specific<List<Map<String, Object>>>(){}.type());
 		Map<String,Boolean> ret = new HashMap<String,Boolean>();
 		for (Map<String,Object> rp : pairs) {
 			String rurl = (String)rp.get("url");
