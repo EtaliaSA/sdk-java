@@ -1,5 +1,6 @@
 package net.etalia.client.services;
 
+import java.util.List;
 import java.util.Map;
 
 import net.etalia.client.domain.Article;
@@ -11,6 +12,7 @@ import net.etalia.client.domain.PublicationSection;
 import net.etalia.client.domain.StampArticle;
 import net.etalia.client.domain.StampPublication;
 import net.etalia.client.domain.User;
+import net.etalia.client.domain.Page;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -92,6 +94,30 @@ public interface ContentApi {
 
 	@RequestMapping(value="/publication/{id}", method=RequestMethod.DELETE)
 	public @ResponseStatus(HttpStatus.NO_CONTENT) void removePublication(@PathVariable("id") String publicationId);
+
+	@RequestMapping(value="/publication/{publicationId}/page", method=RequestMethod.POST)
+	public @ResponseBody @ResponseStatus(HttpStatus.CREATED) Page addPage(
+															@PathVariable(value="publicationId") String publicationId,
+															@RequestBody Page page);
+
+	@RequestMapping(value="/publication/{publicationId}/page/{pageId}", method=RequestMethod.GET)
+	public @ResponseBody Page getPage(@PathVariable(value="publicationId") String publicationId,
+										@PathVariable(value="pageId") String pageId,
+										@RequestParam(value="offset", required=false) Integer offset,
+										@RequestParam(value="count", required=false) Integer count);
+
+	@RequestMapping(value="/publication/{publicationId}/orderPages", method=RequestMethod.PUT)
+	public @ResponseStatus(HttpStatus.NO_CONTENT) void orderPages(@PathVariable String publicationId,
+			@RequestBody Map<String,List<String>> pageIds);
+
+	@RequestMapping(value="/publication/{publicationId}/page/{pageId}", method=RequestMethod.PUT)
+	public @ResponseBody @ResponseStatus(HttpStatus.NO_CONTENT) void updatePage(
+			@PathVariable(value="publicationId") String publicationId,
+			@RequestBody Page page);
+
+	@RequestMapping(value="/publication/{publicationId}/page/{pageId}", method=RequestMethod.DELETE)
+	public @ResponseStatus(HttpStatus.NO_CONTENT) void removePage(@PathVariable(value="publicationId") String publicationId,
+			@PathVariable(value="pageId") String pageId);
 
 	// ========== STAMP ==========
 
