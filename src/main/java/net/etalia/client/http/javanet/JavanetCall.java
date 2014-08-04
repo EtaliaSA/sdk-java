@@ -1,6 +1,5 @@
 package net.etalia.client.http.javanet;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
@@ -79,7 +78,7 @@ public class JavanetCall<Ret> extends Call<Ret> {
 									ub.addParameter(entry.getKey(), convertToString(inval));
 								}
 							} else {
-								ub.addParameter(entry.getKey(), convertToString(value));							
+								ub.addParameter(entry.getKey(), convertToString(value));
 							}
 						}
 						uri = ub.build().toString();
@@ -114,7 +113,7 @@ public class JavanetCall<Ret> extends Call<Ret> {
 								nvp.add(new NameValuePair(name, convertToString(inval)));
 							}
 						} else {
-							nvp.add(new NameValuePair(name, convertToString(value)));							
+							nvp.add(new NameValuePair(name, convertToString(value)));
 						}
 					}
 					payload = URIBuilder.format(nvp, URIBuilder.UTF_8).getBytes();
@@ -133,7 +132,7 @@ public class JavanetCall<Ret> extends Call<Ret> {
 				conn.setDoOutput(true);
 				
 				if (!hasParameters() && hasBody()) {
-					conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");				
+					conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
 				} else {
 					conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
 				}
@@ -148,7 +147,7 @@ public class JavanetCall<Ret> extends Call<Ret> {
 			throw new RuntimeException("Error preparing call to " + uri, t);
 		}
 		
-		int statusCode = 0; 		
+		int statusCode = 0;
 		byte[] respPayload = null;
 		try {
 			if (payload != null) {

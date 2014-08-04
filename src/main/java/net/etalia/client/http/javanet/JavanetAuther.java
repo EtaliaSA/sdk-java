@@ -6,6 +6,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import net.etalia.client.http.Auther;
 import net.etalia.client.utils.URIBuilder;
@@ -14,10 +16,12 @@ import net.etalia.client.utils.Utils;
 
 public class JavanetAuther extends Auther {
 
+	private final static Logger log = Logger.getLogger(JavanetAuther.class.getName());
+
 	private JavanetCaller<?> caller;
 
 	public JavanetAuther(JavanetCaller<?> caller) {
-		super(caller);		
+		super(caller);
 		this.caller = caller;
 	}
 	
@@ -61,7 +65,11 @@ public class JavanetAuther extends Auther {
 		} catch (Exception e) {
 			throw new RuntimeException("Error executing HTTP call" + JavanetCall.httpCallTrace(conn, reqPayload, null), e);
 		}
-		
+
+		if (log.isLoggable(Level.FINEST)) {
+			log.finest(JavanetCall.httpCallTrace(conn, reqPayload, payload));
+		}
+
 		return super.parseResponse(new String(payload));
 	}
 
