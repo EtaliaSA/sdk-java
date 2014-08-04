@@ -76,7 +76,7 @@ public interface ContentApi {
 	public @ResponseBody @ResponseStatus(HttpStatus.NO_CONTENT) void updateArticle(@RequestBody Article article);
 
 	@RequestMapping(value="/content/article/{articleId}", method=RequestMethod.DELETE)
-	public @ResponseBody @ResponseStatus(HttpStatus.NO_CONTENT) void removeArticle(@PathVariable String articleId);
+	public @ResponseBody @ResponseStatus(HttpStatus.NO_CONTENT) void removeArticle(@PathVariable(value="articleId") String articleId);
 
 	// ========== PUBLICATION ==========
 
@@ -87,13 +87,13 @@ public interface ContentApi {
 	public @ResponseBody @ResponseStatus(HttpStatus.CREATED) Publication addPublication(@RequestBody Publication publication);
 
 	@RequestMapping(value="/publication/{id}", method=RequestMethod.GET)
-	public @ResponseBody Publication getPublication(@PathVariable("id") String publicationId);
+	public @ResponseBody Publication getPublication(@PathVariable(value="id") String publicationId);
 
 	@RequestMapping(value="/publication/{id}", method=RequestMethod.PUT)
 	public @ResponseBody @ResponseStatus(HttpStatus.NO_CONTENT) void updatePublication(@RequestBody Publication publication);
 
 	@RequestMapping(value="/publication/{id}", method=RequestMethod.DELETE)
-	public @ResponseStatus(HttpStatus.NO_CONTENT) void removePublication(@PathVariable("id") String publicationId);
+	public @ResponseStatus(HttpStatus.NO_CONTENT) void removePublication(@PathVariable(value="id") String publicationId);
 
 	@RequestMapping(value="/publication/{publicationId}/page", method=RequestMethod.POST)
 	public @ResponseBody @ResponseStatus(HttpStatus.CREATED) Page addPage(
@@ -107,7 +107,7 @@ public interface ContentApi {
 										@RequestParam(value="count", required=false) Integer count);
 
 	@RequestMapping(value="/publication/{publicationId}/orderPages", method=RequestMethod.PUT)
-	public @ResponseStatus(HttpStatus.NO_CONTENT) void orderPages(@PathVariable String publicationId,
+	public @ResponseStatus(HttpStatus.NO_CONTENT) void orderPages(@PathVariable(value="publicationId") String publicationId,
 			@RequestBody Map<String,List<String>> pageIds);
 
 	@RequestMapping(value="/publication/{publicationId}/page/{pageId}", method=RequestMethod.PUT)
@@ -128,12 +128,12 @@ public interface ContentApi {
 	public @ResponseBody @ResponseStatus(HttpStatus.CREATED) StampPublication addStampPublication(@RequestBody Map<String, String> newStamp);
 
 	@RequestMapping(value="/user/{userId}/stampPublication/{stampId}", method=RequestMethod.DELETE)
-	public @ResponseStatus(HttpStatus.NO_CONTENT) void removeStampPublication(@PathVariable("stampId") String stampId);
+	public @ResponseStatus(HttpStatus.NO_CONTENT) void removeStampPublication(@PathVariable(value="stampId") String stampId);
 
 	@RequestMapping(value="/user/{userId}/stampPublication/{stampId}/{publicationId}", method=RequestMethod.DELETE)
 	public @ResponseStatus(HttpStatus.NO_CONTENT) void removeStampPublication(
-																	@PathVariable("stampId") String stampId, 
-																	@PathVariable("publicationId") String publicationId);
+																	@PathVariable(value="stampId") String stampId, 
+																	@PathVariable(value="publicationId") String publicationId);
 
 	// ========== PAGESECTION ==========
 
