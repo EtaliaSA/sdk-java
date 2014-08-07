@@ -65,22 +65,8 @@ public class JavanetCall<Ret> extends Call<Ret> {
 			if (super.method == HttpMethod.GET || super.method == HttpMethod.DELETE) {
 				Utils.assertNull("Cannot send a body with a get request", super.requestBody);
 				if (hasParameters()) {
+					setRequestParameters(ub);
 					try {
-						for (Entry<String, Object> entry : super.requestParameters.entrySet()) {
-							Object value = entry.getValue();
-							if (value == null) continue;
-							if (value.getClass().isArray()) {
-								// This may not return what is expected
-								value = Arrays.asList(value);
-							}
-							if (value instanceof Collection) {
-								for (Object inval : ((Collection<Object>)value)) {
-									ub.addParameter(entry.getKey(), convertToString(inval));
-								}
-							} else {
-								ub.addParameter(entry.getKey(), convertToString(value));
-							}
-						}
 						uri = ub.build().toString();
 					} catch (URISyntaxException e) {
 						throw new IllegalStateException("Error adding parameters to the uri " + uri, e);
@@ -93,8 +79,8 @@ public class JavanetCall<Ret> extends Call<Ret> {
 					conn.setRequestMethod("DELETE");
 				}
 			} else if (super.method == HttpMethod.POST || super.method == HttpMethod.PUT) {
-				Utils.assertFalse("Cannot send both parameters and a body in a POST or PUT", hasParameters() && hasBody());
-				if (hasParameters()) {
+				//Utils.assertFalse("Cannot send both parameters and a body in a POST or PUT", hasParameters() && hasBody());
+				if (hasParameters() && !hasBody()) {
 					List<NameValuePair> nvp = new ArrayList<NameValuePair>();
 					for (Entry<String, Object> entry : super.requestParameters.entrySet()) {
 						Object value = entry.getValue();
@@ -117,7 +103,15 @@ public class JavanetCall<Ret> extends Call<Ret> {
 						}
 					}
 					payload = URIBuilder.format(nvp, URIBuilder.UTF_8).getBytes();
-				} else if (hasBody()) {
+				} else if (hasParameters()) {
+					setRequestParameters(ub);					
+					try {
+						uri = ub.build().toString();
+					} catch (URISyntaxException e) {
+						throw new IllegalStateException("Error adding parameters to the uri " + uri, e);
+					}
+				}
+				if (hasBody()) {
 					payload = super.requestBody;
 				}
 				if (payload == null) payload = new byte[0];
@@ -131,7 +125,7 @@ public class JavanetCall<Ret> extends Call<Ret> {
 				}
 				conn.setDoOutput(true);
 				
-				if (!hasParameters() && hasBody()) {
+				if (hasBody()) {
 					conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
 				} else {
 					conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");

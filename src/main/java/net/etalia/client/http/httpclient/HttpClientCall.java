@@ -81,36 +81,22 @@ public class HttpClientCall<X> extends Call<X> {
 		if (super.method == HttpMethod.GET || super.method == HttpMethod.DELETE) {
 			Utils.assertNull("Cannot send a body with a get request", super.requestBody);
 			if (hasParameters()) {
-				try {
-					for (Entry<String, Object> entry : super.requestParameters.entrySet()) {
-						Object value = entry.getValue();
-						if (value == null) continue;
-						if (value.getClass().isArray()) {
-							// This may not return what is expected
-							value = Arrays.asList(value);
-						}
-						if (value instanceof Collection) {
-							for (Object inval : ((Collection<Object>)value)) {
-								ub.addParameter(entry.getKey(), convertToString(inval));
-							}
-						} else {
-							ub.addParameter(entry.getKey(), convertToString(value));
-						}
-					}
-					uri = ub.build().toString();
-				} catch (URISyntaxException e) {
-					throw new IllegalStateException("Error adding parameters to the uri " + uri, e);
-				}
+				setRequestParameters(ub);
 			} 
+			try {
+				uri = ub.build().toString();
+			} catch (URISyntaxException e) {
+				throw new IllegalStateException("Error adding outProperties parameter to the uri " + uri, e);
+			}				
 			if (super.method == HttpMethod.GET) {
 				message = new HttpGet(uri);
 			} else {
 				message = new HttpDelete(uri);
 			}
 		} else if (super.method == HttpMethod.POST || super.method == HttpMethod.PUT) {
-			Utils.assertFalse("Cannot send both parameters and a body in a POST or PUT", hasParameters() && hasBody());
+			//Utils.assertFalse("Cannot send both parameters and a body in a POST or PUT", hasParameters() && hasBody());
 			byte[] payload = null;
-			if (hasParameters()) {
+			if (hasParameters() && !hasBody()) {
 				List<NameValuePair> nvp = new ArrayList<NameValuePair>();
 				for (Entry<String, Object> entry : super.requestParameters.entrySet()) {
 					Object value = entry.getValue();
@@ -133,10 +119,19 @@ public class HttpClientCall<X> extends Call<X> {
 					}
 				}
 				payload = URLEncodedUtils.format(nvp, "utf8").getBytes();
-			} else if (hasBody()) {
+			} else if (hasParameters()) {
+				setRequestParameters(ub);
+			} 
+			if (hasBody()) {
 				payload = super.requestBody;
 			}
 			if (payload == null) payload = new byte[0];
+			
+			try {
+				uri = ub.build().toString();
+			} catch (URISyntaxException e) {
+				throw new IllegalStateException("Error adding outProperties parameter to the uri " + uri, e);
+			}				
 			
 			HttpEntity entity = new ByteArrayEntity(payload);
 			if (super.method == HttpMethod.POST) {
@@ -149,7 +144,7 @@ public class HttpClientCall<X> extends Call<X> {
 				message = put;
 			}
 			
-			if (!hasParameters() && hasBody()) {
+			if (hasBody()) {
 				message.setHeader(HttpHeaders.CONTENT_TYPE, "application/json; charset=utf-8");
 			} else {
 				message.setHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded; charset=utf-8");

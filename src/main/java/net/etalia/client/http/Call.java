@@ -3,16 +3,19 @@ package net.etalia.client.http;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.BitSet;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
+import net.etalia.client.http.Caller.HttpMethod;
+import net.etalia.client.json.EtaliaObjectMapper;
+import net.etalia.client.utils.URIBuilder;
+import net.etalia.client.utils.Utils;
 import net.etalia.jalia.OutField;
 import net.etalia.jalia.spring.JaliaParametersFilter;
-import net.etalia.client.json.EtaliaObjectMapper;
-import net.etalia.client.utils.Utils;
-import net.etalia.client.http.Caller.HttpMethod;
 
 
 /**
@@ -209,5 +212,22 @@ public abstract class Call<Ret> {
 	public String getPath() {
 		return this.path;
 	}
-	
+
+	protected void setRequestParameters(URIBuilder ub) {
+		for (Entry<String, Object> entry : this.requestParameters.entrySet()) {
+			Object value = entry.getValue();
+			if (value == null) continue;
+			if (value.getClass().isArray()) {
+				// This may not return what is expected
+				value = Arrays.asList(value);
+			}
+			if (value instanceof Collection) {
+				for (Object inval : ((Collection<Object>)value)) {
+					ub.addParameter(entry.getKey(), convertToString(inval));
+				}
+			} else {
+				ub.addParameter(entry.getKey(), convertToString(value));							
+			}
+		}
+	}	
 }
