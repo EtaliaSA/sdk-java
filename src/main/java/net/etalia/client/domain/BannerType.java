@@ -7,7 +7,8 @@ public enum BannerType {
 	Pushdown(970,90),
 	BigBox(300,250),
 	Filmstrip(300,600),
-	Billboard(970,250);
+	Billboard(970,250),
+	MobileStandard(300,50);
 	
 	private int width;
 	private int height;
