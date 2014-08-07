@@ -6,7 +6,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 import net.etalia.client.utils.Utils;
@@ -21,6 +23,10 @@ public abstract class Caller<Serv> {
 
 	protected Serv proxy = null;
 	protected Class<Serv> interf = null;
+	
+	private String[] allFields;
+	private Map<String,String> allHeaders;
+	private String allAuthToken;
 	
 	public static enum HttpMethod {
 		GET,
@@ -159,7 +165,7 @@ public abstract class Caller<Serv> {
 					if (paramName == null || paramName.length() == 0) {
 						int si = path.indexOf('{');
 						int ei = path.indexOf('}', si);
-						if (si != -1 && ei != -1) throw new IllegalStateException("@PathVariable used on parameter " + i + " of method " + inv.getMethod() + " but no {parameter} found in path");
+						if (si == -1 || ei == -1) throw new IllegalStateException("@PathVariable used on parameter " + i + " of method " + inv.getMethod() + " but no {parameter} found in path");
 						paramName = path.substring(si + 1, ei);
 					}
 					paramName = paramName.split(":")[0];
@@ -173,17 +179,47 @@ public abstract class Caller<Serv> {
 			}
 		}
 		
-		return (Call<X>) call;
+		return (Call<X>) initCall(call);
 	}
 	
 	protected abstract <X> Call<X> createCall(Type clazz, HttpMethod method, String path);
 	
 	public Call<?> path(String path) {
-		return createCall(Object.class, HttpMethod.GET, path);
+		return initCall(createCall(Object.class, HttpMethod.GET, path));
 	}
 	
 	public Call<?> path(HttpMethod method, String path) {
-		return createCall(Object.class, method, path);		
+		return initCall(createCall(Object.class, method, path));		
 	}
+	
+	public void setAllAuthToken(String allAuthToken) {
+		this.allAuthToken = allAuthToken;
+	}
+	public void setAllHeaders(Map<String, String> allHeaders) {
+		this.allHeaders = allHeaders;
+	}
+	public void addAllHeader(String header, String value) {
+		if (this.allHeaders == null) this.allHeaders = new HashMap<String, String>();
+		this.allHeaders.put(header, value);
+	}
+	public void setAllFields(String... allFields) {
+		this.allFields = allFields;
+	}
+	
+	protected Call<?> initCall(Call<?> call) {
+		if (allAuthToken != null) {
+			call.authAsToken(allAuthToken);
+		}
+		if (allHeaders != null) {
+			for (Map.Entry<String, String> entry : allHeaders.entrySet()) {
+				call.setHeader(entry.getKey(), entry.getValue());
+			}
+		}
+		if (allFields != null) {
+			call.withFields(allFields);
+		}
+		return call;
+	}
+	
 	
 }
