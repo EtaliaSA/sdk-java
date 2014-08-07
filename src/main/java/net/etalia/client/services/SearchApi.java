@@ -18,7 +18,6 @@ import net.etalia.client.domain.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -47,8 +46,7 @@ public interface SearchApi {
 			@RequestParam(value="offset", required=false) Integer offset,
 			@RequestParam(value="count", required=false) Integer count,
 			@RequestParam(value="advertising", required=false) Integer advertising,
-			@RequestParam(value="advertisingWidth", required=false) Integer advertisingWidth,
-			@RequestHeader(value="x-adu", required=false) String userTgt);
+			@RequestParam(value="advertisingWidth", required=false) Integer advertisingWidth);
 
 	@RequestMapping(value="/search/inpage/{pid}", method=GET)
 	public @ResponseBody AdvertisedPaginationList<Article> searchArticlesByPage(
@@ -56,8 +54,7 @@ public interface SearchApi {
 			@RequestParam(value="offset", required=false) Integer offset,
 			@RequestParam(value="count", required=false) Integer count,
 			@RequestParam(value="advertising", required=false) Integer advertising,
-			@RequestParam(value="advertisingWidth", required=false) Integer advertisingWidth,
-			@RequestHeader(value="x-adu", required=false) String userTgt);
+			@RequestParam(value="advertisingWidth", required=false) Integer advertisingWidth);
 
 	@RequestMapping(value="/article/{aid}/similar", method=GET)
 	public @ResponseBody PaginationList<Article> searchSimilarArticles(
