@@ -121,11 +121,45 @@ public interface ContentApi {
 
 	// ========== STAMP ==========
 
+	@RequestMapping(value="/user/{userId}/stampArticles", method=RequestMethod.GET)
+	public @ResponseBody PaginationList<StampArticle> getStampArticles(
+															@PathVariable(value="userId") String userId,
+															@RequestParam(value="offset", required=false) Integer offset,
+															@RequestParam(value="count", required=false) Integer count);
+
+	@RequestMapping(value="/user/{userId}/stampPublications", method=RequestMethod.GET)
+	public @ResponseBody PaginationList<StampPublication> getStampPublications(
+															@PathVariable(value="userId") String userId,
+															@RequestParam(value="offset", required=false) Integer offset,
+															@RequestParam(value="count", required=false) Integer count);
+
+	@RequestMapping(value="/user/{userId}/stampArticles/article/{articleId}", method=RequestMethod.GET)
+	public @ResponseBody PaginationList<StampArticle> getStampArticlesByArticle(
+															@PathVariable(value="userId") String userId,
+															@PathVariable(value="articleId") String articleId,
+															@RequestParam(value="offset", required=false) Integer offset,
+															@RequestParam(value="count", required=false) Integer count);
+
+	@RequestMapping(value="/user/{userId}/stampPublications/publication/{publicationId}", method=RequestMethod.GET)
+	public @ResponseBody PaginationList<StampPublication> getStampPublicationsByPublication(
+															@PathVariable(value="userId") String userId,
+															@PathVariable(value="publicationId") String publicationId,
+															@RequestParam(value="offset", required=false) Integer offset,
+															@RequestParam(value="count", required=false) Integer count);
+
 	@RequestMapping(value="/user/{userId}/stampArticle", method=RequestMethod.POST)
 	public @ResponseBody @ResponseStatus(HttpStatus.CREATED) StampArticle addStampArticle(@RequestBody Map<String, String> newStamp);
 
 	@RequestMapping(value="/user/{userId}/stampPublication", method=RequestMethod.POST)
 	public @ResponseBody @ResponseStatus(HttpStatus.CREATED) StampPublication addStampPublication(@RequestBody Map<String, String> newStamp);
+
+	@RequestMapping(value="/user/{userId}/stampArticle/{stampId}", method=RequestMethod.DELETE)
+	public @ResponseStatus(HttpStatus.NO_CONTENT) void removeStampArticle(@PathVariable("stampId") String stampId);
+	
+	@RequestMapping(value="/user/{userId}/stampArticle/{stampId}/{articleId}", method=RequestMethod.DELETE)
+	public @ResponseStatus(HttpStatus.NO_CONTENT) void removeStampArticle(
+																	@PathVariable(value="stampId") String stampId, 
+																	@PathVariable(value="articleId") String articleId);
 
 	@RequestMapping(value="/user/{userId}/stampPublication/{stampId}", method=RequestMethod.DELETE)
 	public @ResponseStatus(HttpStatus.NO_CONTENT) void removeStampPublication(@PathVariable(value="stampId") String stampId);
