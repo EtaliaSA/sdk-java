@@ -18,6 +18,7 @@ public class Article extends Entity {
 	private String signer;
 	private String originalUrl;
 	private Long updated;
+	private boolean published = false;
 
 	public String getSubtitle() {
 		return subtitle;
@@ -102,6 +103,12 @@ public class Article extends Entity {
 	}
 	public void setUpdated(Long updated) {
 		this.updated = updated;
+	}
+	public boolean isPublished() {
+		return this.published;
+	}
+	public void setPublished(boolean published) {
+		this.published = published;
 	}
 
 	public void addMedia(Media media) {
