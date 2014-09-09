@@ -17,5 +17,10 @@ public class PageLink extends Page {
 	public void setPage(PageExample page) {
 		this.page = page;
 	}
+	public void setVisibleTitle(String visibleTitle) {
+		if (visibleTitle != null) {
+			setTitle(visibleTitle);
+		}
+	}
 
 }
