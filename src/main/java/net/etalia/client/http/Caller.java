@@ -15,6 +15,7 @@ import net.etalia.client.utils.Utils;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -175,6 +176,9 @@ public abstract class Caller<Serv> {
 					call.setParameter(paramName, inv.getArgument(paramCnt++));
 				} else if (ann instanceof RequestBody) {
 					call.setBody(inv.getArgument(paramCnt++));
+				} else if (ann instanceof RequestHeader) {
+					String headerName = ((RequestHeader)ann).value();
+					call.setHeader(headerName, inv.getArgument(paramCnt++));
 				}
 			}
 		}
