@@ -4,7 +4,6 @@ import static net.etalia.cron.ScheduledImport.CLOUDFRONT_URL;
 import static net.etalia.cron.ScheduledImport.IMAGE_API_URL;
 import static net.etalia.cron.ScheduledImport.PROP_FILE_FORMAT;
 import static net.etalia.cron.ScheduledImport.PROP_TIMEZONE;
-import static net.etalia.cron.ScheduledImport.getProperty;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,7 +42,7 @@ public class ScheduledJob implements Runnable {
 
 	public void run() {
 		try {
-			String format = getProperty(PROP_FILE_FORMAT);
+			String format = imp.getProperty(PROP_FILE_FORMAT);
 			log.info("Looking for files in " + dir);
 			File basedir = new File(dir);
 			for (File file : basedir.listFiles(new AcceptedFileFilter())) {
@@ -52,7 +51,7 @@ public class ScheduledJob implements Runnable {
 					Article article = null;
 					if ("NITF".equals(format)) {
 						NITFArticleReader reader = new NITFArticleReader();
-						reader.setTimeZone(TimeZone.getTimeZone(getProperty(PROP_TIMEZONE)));
+						reader.setTimeZone(TimeZone.getTimeZone(imp.getProperty(PROP_TIMEZONE)));
 						article = reader.read(new FileInputStream(file));
 					}
 					article.setPublished(true);
@@ -117,7 +116,7 @@ public class ScheduledJob implements Runnable {
 
 	private class AcceptedFileFilter implements FilenameFilter {
 		public boolean accept(File dir, String name) {
-			String format = getProperty(PROP_FILE_FORMAT);
+			String format = imp.getProperty(PROP_FILE_FORMAT);
 			if ("NITF".equals(format) && name.endsWith(".xml")) {
 				return true;
 			}

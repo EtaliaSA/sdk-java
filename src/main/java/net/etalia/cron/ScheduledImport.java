@@ -2,21 +2,12 @@ package net.etalia.cron;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.security.KeyStore;
 import java.util.Properties;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
-
-import javax.net.ssl.SSLContext;
-
-import org.apache.http.client.HttpClient;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLContexts;
-import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 
 import net.etalia.client.codec.Digester;
 import net.etalia.client.domain.User;
@@ -24,6 +15,8 @@ import net.etalia.client.http.Caller;
 import net.etalia.client.http.httpclient.HttpClientCaller;
 import net.etalia.client.http.httpclient.HttpClientHelper;
 import net.etalia.client.services.ContentApi;
+
+import org.apache.http.client.HttpClient;
 
 public class ScheduledImport {
 
@@ -45,16 +38,16 @@ public class ScheduledImport {
 	protected static final String IMAGE_API_URL = "http://image.etalia.net:81/";
 	protected static final String CLOUDFRONT_URL = "http://d2feaz2wbhr9zq.cloudfront.net/";
 
-	private static Properties properties;
-	private static String propertyFile;
+	private Properties properties;
+	private String propertyFile;
 	private User user;
 	private HttpClientCaller<ContentApi> cApi;
 
-	public static String getProperty(String name) {
+	public String getProperty(String name) {
 		return getProperty(name, null);
 	}
 
-	public static String getProperty(String name, String defaultValue) {
+	public String getProperty(String name, String defaultValue) {
 		if (properties == null) {
 			properties = new Properties();
 			try {
@@ -89,45 +82,48 @@ public class ScheduledImport {
 		} catch (Exception e) {
 			System.err.println("Cannot instantiate LogManager: " + e.getMessage());
 		}
+		String propertyFile;
 		if (args.length != 0) {
 			propertyFile = args[0];
 		} else {
 			propertyFile = System.getProperty("user.dir") + File.separator + ".etalia-import.properties";
 		}
-		log.info("Using property file: " + propertyFile);
-		ScheduledImport importer = new ScheduledImport();
+		ScheduledImport importer = new ScheduledImport(propertyFile);
 		importer.init();
 		importer.run();
 	}
 
-	public ScheduledImport() {
+	public ScheduledImport(String propertyFile) {
 		try {
 			LogManager.getLogManager().readConfiguration();
 		} catch (Exception e) {
 			System.err.println("Cannot instantiate LogManager: " + e.getMessage());
 		}
+		log.info("Using property file: " + propertyFile);
+		this.propertyFile = propertyFile;
 	}
 
 	public void init() {
 		cApi = new HttpClientCaller<ContentApi>(ContentApi.class);
 		cApi.setBaseUrl(CONTENT_API_URL);
-		try {
+		HttpClient httpClient = new HttpClientHelper().createDefaultClient(10, 30000);
+		/*try {
 			KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
-			trustStore.load(ScheduledImport.class.getResourceAsStream("/keystore.jks"), "etalia".toCharArray());
+			trustStore.load(ScheduledImport.class.getResourceAsStream("/keystore.jks.dev"), "etalia".toCharArray());
 			SSLContext sslcontext = SSLContexts.custom().loadTrustMaterial(trustStore, new TrustSelfSignedStrategy()).build();
 			SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslcontext, new String[] {"TLSv1"},
 					null,
 					SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
-			HttpClient httpClient = new HttpClientHelper().createDefaultClient(10, 30000, sslsf);
-			cApi.setHttpClient(httpClient);
+			httpClient = new HttpClientHelper().createDefaultClient(10, 30000, sslsf);
 		} catch (Exception e) {
 			log.log(Level.SEVERE, "Cannot use SSL Certificate", e);
-		}
-		log.fine("Generate Authentication token...");
+		}*/
+		cApi.setHttpClient(httpClient);
+		log.info("Generate Authentication token...");
 		String auth = "Etalia_" + getProperty(PROP_USER) + ":" + new Digester().md5(getProperty(PROP_PASSWORD)).toBase64UrlSafeNoPad();
 		user = cApi.method(cApi.service().authUser(auth)).withFields("id", "extraData")
 						.setHeader("Authorization", auth).execute().cast();
-		log.log(Level.FINE, "Authentication done!");
+		log.info("Authentication done!");
 	}
 
 	public void run() {
