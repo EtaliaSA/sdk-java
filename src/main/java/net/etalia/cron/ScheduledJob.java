@@ -3,6 +3,7 @@ package net.etalia.cron;
 import static net.etalia.cron.ScheduledImport.CLOUDFRONT_URL;
 import static net.etalia.cron.ScheduledImport.IMAGE_API_URL;
 import static net.etalia.cron.ScheduledImport.PROP_FILE_FORMAT;
+import static net.etalia.cron.ScheduledImport.PROP_TIMEZONE;
 import static net.etalia.cron.ScheduledImport.getProperty;
 
 import java.io.File;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -49,7 +51,9 @@ public class ScheduledJob implements Runnable {
 				try {
 					Article article = null;
 					if ("NITF".equals(format)) {
-						article = new NITFArticleReader().read(new FileInputStream(file));
+						NITFArticleReader reader = new NITFArticleReader();
+						reader.setTimeZone(TimeZone.getTimeZone(getProperty(PROP_TIMEZONE)));
+						article = reader.read(new FileInputStream(file));
 					}
 					article.setPublished(true);
 					article.setSearchable(true);
