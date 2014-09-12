@@ -28,6 +28,7 @@ public class ScheduledImport {
 	public static final String PROP_FILE_FORMAT = "format";
 	public static final String PROP_JOB_DELAY = "job.delay";
 	public static final String PROP_PARALLEL_IMPORTS = "parallel-imports";
+	public static final String PROP_DIRECTORIES = "directories";
 	public static final String PROP_PASSWORD = "password";
 	public static final String PROP_PUBLICATION = "publication";
 	public static final String PROP_STAMP = "stamp";
@@ -127,10 +128,13 @@ public class ScheduledImport {
 	}
 
 	public void run() {
-		if (getProperty(PROP_PARALLEL_IMPORTS) != null) {
+		if (getProperty(PROP_DIRECTORIES) != null) {
+			int directories = Integer.parseInt(getProperty(PROP_DIRECTORIES));
 			int imports = Integer.parseInt(getProperty(PROP_PARALLEL_IMPORTS));
+			log.info("Scheduling " + imports + " parallel jobs");
 			scheduler = Executors.newScheduledThreadPool(imports);
-			for (int i=1; i<=imports; i++) {
+			log.info("Scanning " + directories + " directories");
+			for (int i=1; i<=directories; i++) {
 				String dir = getProperty(PROP_FILES_DIR + "." + i);
 				String publication = getProperty(PROP_PUBLICATION + "." + i);
 				String stamp = getProperty(ScheduledImport.PROP_STAMP + "." + i);
