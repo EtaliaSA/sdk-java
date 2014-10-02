@@ -79,4 +79,10 @@ public interface SearchApi {
 			@RequestParam(value="offset", required=false) Integer offset,
 			@RequestParam(value="count", required=false) Integer count);
 
+	@RequestMapping(value="/user/{userId}/publications")
+	public @ResponseBody PaginationList<Publication> getPublications(
+			@PathVariable(value="userId") String ownerId,
+			@RequestParam(value="offset", required=false) Integer start,
+			@RequestParam(value="count", required=false) Integer count);
+
 }
