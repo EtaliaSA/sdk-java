@@ -55,6 +55,7 @@ public class HttpClientCall<X> extends Call<X> {
 
 	@Override
 	public Response<X> execute(boolean check) {
+		prepareBody();
 		String uri = Utils.pathConcat(this.caller.getBaseUrl(), super.path);
 		if (System.getProperty("embedWebPort") != null)
 			uri = uri.replace("${embedWebPort}", System.getProperty("embedWebPort"));

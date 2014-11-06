@@ -14,6 +14,7 @@ import net.etalia.client.http.Caller.HttpMethod;
 import net.etalia.client.json.EtaliaObjectMapper;
 import net.etalia.client.utils.URIBuilder;
 import net.etalia.client.utils.Utils;
+import net.etalia.jalia.DefaultOptions;
 import net.etalia.jalia.OutField;
 import net.etalia.jalia.spring.JaliaParametersFilter;
 
@@ -61,13 +62,21 @@ public abstract class Call<Ret> {
 	}
 	
 	public static EtaliaObjectMapper eom = new EtaliaObjectMapper(true);
+	public static EtaliaObjectMapper eomFull = new EtaliaObjectMapper(true);
+	
+	static {
+		eomFull.setOption(DefaultOptions.INCLUDE_NULLS, true);
+		eomFull.setOption(DefaultOptions.INCLUDE_EMPTY, true);
+	}
 	
 	protected Set<String> requestFields = new HashSet<String>();
+	protected Set<String> sendFields = new HashSet<String>();
 	protected Type returnType;
 	protected HttpMethod method;
 	protected String path;
 	protected Map<String, Object> requestParameters = new HashMap<String, Object>();
 	protected Map<String, String> requestHeaders = new HashMap<String, String>();
+	private Object requestBodyBean;
 	protected byte[] requestBody;
 	
 	protected BitSet accept = null;
@@ -83,7 +92,14 @@ public abstract class Call<Ret> {
 		requestFields.addAll(Arrays.asList(fields));
 		return this;
 	}
-	
+
+	public Call<Ret> sendFields(String... fields) {
+		if (fields == null) return this;
+		sendFields.addAll(Arrays.asList(fields));
+		return this;
+	}
+
+
 	public Call<Ret> accept(int... statusCodes) {
 		if (accept == null) accept = new BitSet(600);
 		for (int sc : statusCodes) accept.set(sc);
@@ -112,7 +128,20 @@ public abstract class Call<Ret> {
 		setHeader("Authorization", "Etalia " + token);
 		return this;
 	}
-		
+	protected void prepareBody() {
+		if (requestBody == null && requestBodyBean != null) {
+			try {
+				if (this.sendFields.size() == 0) {
+					this.setBody(eom.writeValueAsBytes(requestBodyBean, new OutField(true)));
+				} else {
+					this.setBody(eomFull.writeValueAsBytes(requestBodyBean, OutField.getRoot(this.sendFields.toArray(new String[this.sendFields.size()]))));
+				}
+			} catch (Exception e) {
+				throw new RuntimeException("Error setting entity as request body", e);
+			}
+		}
+	}
+	
 	
 	public Response<Ret> execute() {
 		return execute(true);
@@ -170,11 +199,7 @@ public abstract class Call<Ret> {
 	}
 	
 	public Call<Ret> setBody(Object o) {
-		try {
-			this.setBody(eom.writeValueAsBytes(o, new OutField(true)));
-		} catch (Exception e) {
-			throw new RuntimeException("Error setting entity as request body", e);
-		}
+		this.requestBodyBean = o;
 		return this;
 	}
 	
@@ -229,5 +254,5 @@ public abstract class Call<Ret> {
 				ub.addParameter(entry.getKey(), convertToString(value));							
 			}
 		}
-	}	
+	}
 }
