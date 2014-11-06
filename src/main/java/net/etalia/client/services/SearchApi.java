@@ -25,6 +25,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public interface SearchApi {
 
+	@RequestMapping(value="/version/{id}", method=GET)
+	public @ResponseBody Map<String, String> getEntityVersion(
+			@PathVariable(value="id") String id) throws Exception;
+
 	@RequestMapping(value="/publication/last", method=GET)
 	public @ResponseBody PaginationList<Publication> getLastPublications(
 			@RequestParam(value="offset", required=false) Integer start,
@@ -77,6 +81,12 @@ public interface SearchApi {
 	public @ResponseBody PaginationList<User> userSuggest(
 			@RequestParam("q") String q,
 			@RequestParam(value="offset", required=false) Integer offset,
+			@RequestParam(value="count", required=false) Integer count);
+
+	@RequestMapping(value="/user/{userId}/publications", method=GET)
+	public @ResponseBody PaginationList<Publication> getPublications(
+			@PathVariable(value="userId") String ownerId,
+			@RequestParam(value="offset", required=false) Integer start,
 			@RequestParam(value="count", required=false) Integer count);
 
 }

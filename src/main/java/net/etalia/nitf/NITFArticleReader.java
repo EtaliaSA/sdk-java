@@ -1,8 +1,5 @@
 package net.etalia.nitf;
 
-import static net.etalia.cron.ScheduledImport.PROP_TIMEZONE;
-import static net.etalia.cron.ScheduledImport.getProperty;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -25,6 +22,12 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class NITFArticleReader {
+
+	private TimeZone timeZone;
+
+	public void setTimeZone(TimeZone timeZone) {
+		this.timeZone = timeZone;
+	}
 
 	public Article read(InputStream is) throws IOException {
 		try {
@@ -52,10 +55,14 @@ public class NITFArticleReader {
 		}
 		article.setBody(getValue(doc, "/nitf/body/body.content/block/p"));
 		String dateString = getValue(doc, "/nitf/head/docdata/date.release/@norm");
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		sdf.setTimeZone(TimeZone.getTimeZone(getProperty(PROP_TIMEZONE)));
-		Long date = sdf.parse(dateString).getTime();
-		article.setUpdated(date);
+		if (dateString != null && !dateString.trim().equals("")) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			if (timeZone != null) {
+				sdf.setTimeZone(timeZone);
+			}
+			Long date = sdf.parse(dateString).getTime();
+			article.setUpdated(date);
+		}
 		return article;
 	}
 
