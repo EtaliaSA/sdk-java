@@ -27,7 +27,7 @@ public interface SearchApi {
 
 	@RequestMapping(value="/version/{id}", method=GET)
 	public @ResponseBody Map<String, String> getEntityVersion(
-			@PathVariable(value="id") String id) throws Exception;
+			@PathVariable(value="id") String id);
 
 	@RequestMapping(value="/publication/last", method=GET)
 	public @ResponseBody PaginationList<Publication> getLastPublications(
