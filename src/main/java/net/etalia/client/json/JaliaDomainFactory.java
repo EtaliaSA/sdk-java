@@ -51,6 +51,7 @@ public class JaliaDomainFactory implements EntityNameProvider, EntityFactory, Js
 	private JsonClassDataFactoryImpl classDataFactory = new JsonClassDataFactoryImpl();
 	private Map<Class<?>, String> nameMappingsByClass = new HashMap<Class<?>, String>();
 	private Map<String, Class<?>> nameMappingsByName = new HashMap<String, Class<?>>();
+	protected Object lastObject;
 	
 	{
 		map(AdvertisedPaginationList.class, "AdvertisedPaginationList");
@@ -135,6 +136,7 @@ public class JaliaDomainFactory implements EntityNameProvider, EntityFactory, Js
 	}
 
 	public Object prepare(Object obj, boolean serializing, JsonContext context) {
+		this.lastObject = obj;
 		return obj;
 	}
 
