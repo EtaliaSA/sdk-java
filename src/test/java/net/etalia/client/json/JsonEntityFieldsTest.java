@@ -12,7 +12,9 @@ import java.util.Arrays;
 
 import net.etalia.client.domain.Article;
 import net.etalia.client.domain.Media;
+import net.etalia.client.domain.PublicationStandard;
 import net.etalia.client.domain.SearchCriteria;
+import net.etalia.client.domain.StampArticle;
 import net.etalia.client.domain.User;
 
 import org.junit.Test;
@@ -110,6 +112,63 @@ public class JsonEntityFieldsTest {
 		String[] split = str.split(",");
 		for (String sp : split) {
 			assertThat(sp, either(containsString("body\":")).or(containsString("title\":")).or(containsString("originalUrl\":")).or(containsString("@entity")));
+		}
+	}
+	
+	@Test
+	public void extraData() throws Exception {
+		SearchCriteria sc = new SearchCriteria();
+		sc.setExtraData("prova", "extraroba");
+		
+		assertThat((String)sc.getExtraData("prova"), equalTo("extraroba"));
+		
+		EtaliaObjectMapper eom = new EtaliaObjectMapper(true);
+		String str = eom.writeValueAsString(sc);
+		
+		System.out.println(str);
+
+		String[] split = str.split(",");
+		for (String sp : split) {
+			assertThat(sp, 
+					either(containsString("@entity\":"))
+					.or(containsString("extraData\":"))
+				);
+		}
+		assertThat(str, containsString("extraroba"));
+	}
+	
+	@Test
+	public void cascading() throws Exception {
+		SearchCriteria sc = new SearchCriteria();
+		sc.setProfileBoost(5l);
+		
+		User user = new User();
+		user.setId("u1234");
+		user.setTitle("Mantitolo");
+		sc.getAuthorsFilter().add(user);
+		
+		PublicationStandard p = new PublicationStandard();
+		p.setId("p1234");
+		p.setTitle("Pubblico");
+		sc.getPublicationsFilter().add(p);
+		
+		EtaliaObjectMapper eom = new EtaliaObjectMapper(true);
+		String str = eom.writeValueAsString(sc);
+		
+		System.out.println(str);
+		
+		String[] split = str.split(",");
+		for (String sp : split) {
+			assertThat(sp, 
+					either(containsString("@entity\":"))
+					.or(containsString("authorsFilter\":"))
+					.or(containsString("id\":\"u1234"))
+					.or(containsString("title\":\"Mantitolo"))
+					.or(containsString("profileBoost\":"))
+					.or(containsString("publicationsFilter\":"))
+					.or(containsString("id\":\"p1234"))
+					.or(containsString("title\":\"Pubblico"))
+				);
 		}
 	}
 

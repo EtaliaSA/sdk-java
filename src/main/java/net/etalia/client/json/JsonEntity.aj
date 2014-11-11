@@ -37,12 +37,11 @@ public aspect JsonEntity {
 	{
 		String name = ((MethodSignature)thisJoinPointStaticPart.getSignature()).getMethod().getName();
 		name = Character.toLowerCase(name.charAt(3)) + name.substring(4);
+		if (name.equals("id")) return;
 		e.getJsonUsedFields().add(name);
 	}
 	
-	
-	// TODO repeat for map and list
-	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	Set around(Entity e) :
 		execution(Set Entity+.get*(..))
 		&& this(e)
@@ -55,6 +54,7 @@ public aspect JsonEntity {
 		return val;
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	List around(Entity e) :
 		execution(List Entity+.get*(..))
 		&& this(e)
@@ -65,7 +65,19 @@ public aspect JsonEntity {
 		if (!(val instanceof MonitoredList)) val = new MonitoredList(e, name, val);
 		return val;
 	}
-	
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	Map around(Entity e) :
+		execution(Map Entity+.get*(..))
+		&& this(e)
+	{
+		String name = ((MethodSignature)thisJoinPointStaticPart.getSignature()).getMethod().getName();
+		name = Character.toLowerCase(name.charAt(3)) + name.substring(4);
+		Map val = proceed(e); 
+		if (!(val instanceof MonitoredMap)) val = new MonitoredMap(e, name, val);
+		return val;
+	}
+
 	public class MonitoredBase {
 
 		protected Entity owner;
@@ -292,7 +304,7 @@ public aspect JsonEntity {
 		private Map<K, V> delegate;
 
 		public MonitoredMap(Entity owner, String name, Map<K,V> delegate) {
-			super(owner, name);
+			super(owner, name + ".*");
 			this.delegate = delegate;
 		}
 
