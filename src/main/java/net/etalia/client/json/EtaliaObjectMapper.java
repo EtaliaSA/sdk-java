@@ -2,6 +2,7 @@ package net.etalia.client.json;
 
 import javax.annotation.PostConstruct;
 
+import net.etalia.jalia.JsonContext;
 import net.etalia.jalia.ObjectMapper;
 import net.etalia.jalia.stream.JsonReader;
 
@@ -38,6 +39,11 @@ public class EtaliaObjectMapper extends ObjectMapper {
 		// Set the reader lenient, we want to accept some errors
 		ret.setLenient(true);
 		return ret;
+	}
+	
+	@Override
+	protected JsonContext createContext() {
+		return new JsonEntityFieldsContext(this, (JaliaDomainFactory) this.getClassDataFactory());
 	}
 		
 }

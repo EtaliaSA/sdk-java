@@ -112,10 +112,7 @@ public class Article extends Entity {
 	}
 
 	public void addMedia(Media media) {
-		if (this.gallery == null) {
-			this.gallery = new LinkedList<Media>();
-		}
-		this.gallery.add(media);
+		this.getGallery().add(media);
 	}
 
 }
