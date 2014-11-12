@@ -118,13 +118,13 @@ public class JsonEntityFieldsTest {
 	
 	@Test
 	public void extraData() throws Exception {
-		SearchCriteria sc = new SearchCriteria();
-		sc.setExtraData("prova", "extraroba");
+		Article a = new Article();
+		a.setExtraData("prova", "extraroba");
 		
-		assertThat((String)sc.getExtraData("prova"), equalTo("extraroba"));
+		assertThat((String)a.getExtraData("prova"), equalTo("extraroba"));
 		
 		EtaliaObjectMapper eom = new EtaliaObjectMapper(true);
-		String str = eom.writeValueAsString(sc);
+		String str = eom.writeValueAsString(a);
 		
 		System.out.println(str);
 

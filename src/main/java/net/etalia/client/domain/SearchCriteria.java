@@ -3,7 +3,7 @@ package net.etalia.client.domain;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public class SearchCriteria extends Entity {
+public class SearchCriteria {
 
 	String tags; // comma sep
 	Set<User> authorsFilter = new LinkedHashSet<User>();

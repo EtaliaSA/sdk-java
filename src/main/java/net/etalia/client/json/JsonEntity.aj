@@ -10,29 +10,36 @@ import java.util.Set;
 
 import org.aspectj.lang.reflect.MethodSignature;
 
-import net.etalia.client.domain.Entity;
 import net.etalia.jalia.annotations.JsonIgnore;
 
 public aspect JsonEntity {
-
-	declare error : get(List Entity+.*) && !(withincode(* Entity+.get*(..))) && !(withincode(* Entity+.set*(..))) : "Use getters to use collections!";
-	declare error : get(Set Entity+.*) && !(withincode(* Entity+.get*(..))) && !(withincode(* Entity+.set*(..))) : "Use getters to use collections!";
-	declare error : get(Map Entity+.*) && !(withincode(* Entity+.get*(..))) && !(withincode(* Entity+.set*(..))) : "Use getters to use collections!";
 	
-	private Set<String> Entity.jsonUsedFields = new HashSet<String>();
+	public interface JsonEntityAware {
+		public Set<String> getJsonUsedFields();
+		public void cleanJsonUsedFields();
+	}
+	
+	declare parents : net.etalia.client.domain.Entity implements JsonEntityAware;
+	declare parents : net.etalia.client.domain.SearchCriteria implements JsonEntityAware;
+
+	declare error : get(List JsonEntityAware+.*) && !(withincode(* JsonEntityAware+.get*(..))) && !(withincode(* JsonEntityAware+.set*(..))) : "Use getters to use collections!";
+	declare error : get(Set JsonEntityAware+.*) && !(withincode(* JsonEntityAware+.get*(..))) && !(withincode(* JsonEntityAware+.set*(..))) : "Use getters to use collections!";
+	declare error : get(Map JsonEntityAware+.*) && !(withincode(* JsonEntityAware+.get*(..))) && !(withincode(* JsonEntityAware+.set*(..))) : "Use getters to use collections!";
+	
+	private Set<String> JsonEntityAware.jsonUsedFields = new HashSet<String>();
 	
 	@JsonIgnore
-	public Set<String> Entity.getJsonUsedFields() {
+	public Set<String> JsonEntityAware.getJsonUsedFields() {
 		return this.jsonUsedFields;
 	}
 	
-	public void Entity.cleanJsonUsedFields() {
+	public void JsonEntityAware.cleanJsonUsedFields() {
 		this.getJsonUsedFields().clear();
 	}
 	
 	
-	after(Entity e) :
-		execution(* Entity+.set*(..))
+	after(JsonEntityAware e) :
+		execution(* JsonEntityAware+.set*(..))
 		&& this(e)
 	{
 		String name = ((MethodSignature)thisJoinPointStaticPart.getSignature()).getMethod().getName();
@@ -42,10 +49,10 @@ public aspect JsonEntity {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	Set around(Entity e) :
-		execution(Set Entity+.get*(..))
+	Set around(JsonEntityAware e) :
+		execution(Set JsonEntityAware+.get*(..))
 		&& this(e)
-		&& !(execution(Set Entity+.getJsonUsedFields()))
+		&& !(execution(Set JsonEntityAware+.getJsonUsedFields()))
 	{
 		String name = ((MethodSignature)thisJoinPointStaticPart.getSignature()).getMethod().getName();
 		name = Character.toLowerCase(name.charAt(3)) + name.substring(4);
@@ -56,8 +63,8 @@ public aspect JsonEntity {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	List around(Entity e) :
-		execution(List Entity+.get*(..))
+	List around(JsonEntityAware e) :
+		execution(List JsonEntityAware+.get*(..))
 		&& this(e)
 	{
 		String name = ((MethodSignature)thisJoinPointStaticPart.getSignature()).getMethod().getName();
@@ -69,8 +76,8 @@ public aspect JsonEntity {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	Map around(Entity e) :
-		execution(Map Entity+.get*(..))
+	Map around(JsonEntityAware e) :
+		execution(Map JsonEntityAware+.get*(..))
 		&& this(e)
 	{
 		String name = ((MethodSignature)thisJoinPointStaticPart.getSignature()).getMethod().getName();
@@ -83,10 +90,10 @@ public aspect JsonEntity {
 
 	public class MonitoredBase {
 
-		protected Entity owner;
+		protected JsonEntityAware owner;
 		protected String name;
 		
-		public MonitoredBase(Entity owner, String name) {
+		public MonitoredBase(JsonEntityAware owner, String name) {
 			this.owner = owner;
 			this.name = name;
 		}
@@ -101,7 +108,7 @@ public aspect JsonEntity {
 
 		private Iterator<T> delegate;
 
-		public MonitoredIterator(Entity owner, String name, Iterator<T> delegate) {
+		public MonitoredIterator(JsonEntityAware owner, String name, Iterator<T> delegate) {
 			super(owner, name);
 			this.delegate = delegate;
 		}
@@ -125,7 +132,7 @@ public aspect JsonEntity {
 
 		private ListIterator<T> delegate;
 
-		public MonitoredListIterator(Entity owner, String name, ListIterator<T> delegate) {
+		public MonitoredListIterator(JsonEntityAware owner, String name, ListIterator<T> delegate) {
 			super(owner, name, delegate);
 			this.delegate = delegate;
 		}
@@ -163,7 +170,7 @@ public aspect JsonEntity {
 
 		private Collection<T> delegate;
 
-		public MonitoredCollection(Entity owner, String name, Collection<T> delegate) {
+		public MonitoredCollection(JsonEntityAware owner, String name, Collection<T> delegate) {
 			super(owner, name);
 			this.delegate = delegate;
 		}
@@ -240,7 +247,7 @@ public aspect JsonEntity {
 
 		protected Set<T> delegate;
 		
-		public MonitoredSet(Entity owner, String name, Set<T> delegate) {
+		public MonitoredSet(JsonEntityAware owner, String name, Set<T> delegate) {
 			super(owner,name,delegate);
 			this.delegate = delegate;
 		}
@@ -251,7 +258,7 @@ public aspect JsonEntity {
 
 		private List<T> delegate;
 
-		public MonitoredList(Entity owner, String name, List<T> delegate) {
+		public MonitoredList(JsonEntityAware owner, String name, List<T> delegate) {
 			super(owner, name, delegate);
 			this.delegate = delegate;
 		}
@@ -306,7 +313,7 @@ public aspect JsonEntity {
 
 		private Map<K, V> delegate;
 
-		public MonitoredMap(Entity owner, String name, Map<K,V> delegate) {
+		public MonitoredMap(JsonEntityAware owner, String name, Map<K,V> delegate) {
 			super(owner, name + ".*");
 			this.delegate = delegate;
 		}
