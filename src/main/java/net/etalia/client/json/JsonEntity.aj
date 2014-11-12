@@ -50,6 +50,7 @@ public aspect JsonEntity {
 		String name = ((MethodSignature)thisJoinPointStaticPart.getSignature()).getMethod().getName();
 		name = Character.toLowerCase(name.charAt(3)) + name.substring(4);
 		Set val = proceed(e); 
+		if (val == null) return null;
 		if (!(val instanceof MonitoredSet)) val = new MonitoredSet(e, name, val);
 		return val;
 	}
@@ -62,6 +63,7 @@ public aspect JsonEntity {
 		String name = ((MethodSignature)thisJoinPointStaticPart.getSignature()).getMethod().getName();
 		name = Character.toLowerCase(name.charAt(3)) + name.substring(4);
 		List val = proceed(e); 
+		if (val == null) return null;
 		if (!(val instanceof MonitoredList)) val = new MonitoredList(e, name, val);
 		return val;
 	}
@@ -74,6 +76,7 @@ public aspect JsonEntity {
 		String name = ((MethodSignature)thisJoinPointStaticPart.getSignature()).getMethod().getName();
 		name = Character.toLowerCase(name.charAt(3)) + name.substring(4);
 		Map val = proceed(e); 
+		if (val == null) return null;
 		if (!(val instanceof MonitoredMap)) val = new MonitoredMap(e, name, val);
 		return val;
 	}
