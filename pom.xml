@@ -85,6 +85,9 @@
 					<excludes>
 						<exclude>**/*.*</exclude>
 					</excludes>
+					<testExcludes>
+						<exclude>**/*.*</exclude>
+					</testExcludes>
 				</configuration>
 			</plugin>
 			<plugin>
