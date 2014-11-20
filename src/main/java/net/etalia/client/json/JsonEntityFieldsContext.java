@@ -18,7 +18,7 @@ public class JsonEntityFieldsContext extends JsonContext {
 	}
 	
 	public boolean entering(String fieldName, Collection<String> defaults) {
-		Object last = factory.lastObject;
+		Object last = this.getFromStack("All_SerializeStack");
 		if (!(last instanceof JsonEntityAware)) return super.entering(fieldName, defaults);
 		boolean ret = super.entering(fieldName, ((JsonEntityAware)last).getJsonUsedFields());
 		if (ret) {
