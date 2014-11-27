@@ -58,7 +58,7 @@ public interface ContentApi {
 	public @ResponseBody User authFBUser(@RequestHeader("Authorization") String authorization);
 
 	@RequestMapping(value="/token/forgotPassword", method=RequestMethod.POST)
-	public @ResponseStatus(HttpStatus.CREATED) void forgotPassword(@RequestBody Map<String, String> data);
+	public @ResponseStatus(HttpStatus.NO_CONTENT) void forgotPassword(@RequestBody Map<String, String> data);
 
 	@RequestMapping(value="/user/{id}", method=RequestMethod.GET)
 	public @ResponseBody User getUser(@PathVariable("id") String userId);
