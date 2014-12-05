@@ -176,6 +176,12 @@ public interface ContentApi {
 	@RequestMapping(value="/user/{userId}/stampPublication", method=RequestMethod.POST)
 	public @ResponseBody @ResponseStatus(HttpStatus.CREATED) StampPublication addStampPublication(@RequestBody Map<String, String> newStamp);
 
+	@RequestMapping(value="/user/{userId}/stampArticle/{stampId}", method=RequestMethod.PUT)
+	public @ResponseStatus(HttpStatus.NO_CONTENT) void updateStampArticle(@RequestBody StampArticle stamp);
+
+	@RequestMapping(value="/user/{userId}/stampPublication/{stampId}", method=RequestMethod.PUT)
+	public @ResponseStatus(HttpStatus.NO_CONTENT) void updateStampPublication(@RequestBody StampPublication stamp);
+
 	@RequestMapping(value="/user/{userId}/stampArticle/{stampId}", method=RequestMethod.DELETE)
 	public @ResponseStatus(HttpStatus.NO_CONTENT) void removeStampArticle(@PathVariable("stampId") String stampId);
 	
