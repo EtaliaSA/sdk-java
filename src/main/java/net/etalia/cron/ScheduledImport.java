@@ -2,6 +2,7 @@ package net.etalia.cron;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -11,7 +12,9 @@ import java.util.logging.Logger;
 
 import net.etalia.client.codec.Digester;
 import net.etalia.client.domain.User;
+import net.etalia.client.http.Call;
 import net.etalia.client.http.Caller;
+import net.etalia.client.http.JsonedException;
 import net.etalia.client.http.httpclient.HttpClientCaller;
 import net.etalia.client.http.httpclient.HttpClientHelper;
 import net.etalia.client.services.ContentApi;
@@ -120,11 +123,7 @@ public class ScheduledImport {
 			log.log(Level.SEVERE, "Cannot use SSL Certificate", e);
 		}*/
 		cApi.setHttpClient(httpClient);
-		log.info("Generate Authentication token...");
-		String auth = "Etalia_" + getProperty(PROP_USER) + ":" + new Digester().md5(getProperty(PROP_PASSWORD)).toBase64UrlSafeNoPad();
-		user = cApi.method(cApi.service().authUser(auth)).withFields("id", "extraData")
-						.setHeader("Authorization", auth).execute().cast();
-		log.info("Authentication done!");
+		this.authentication();
 	}
 
 	public void run() {
@@ -151,5 +150,52 @@ public class ScheduledImport {
 			log.info("Scheduling new job for directory: " + dir + " - publication: " + publication + " - stamp: " + stamp);
 			scheduler.scheduleWithFixedDelay(job, 0, Long.parseLong(getProperty(PROP_JOB_DELAY, "60")), TimeUnit.SECONDS);
 		}
+	}
+
+	public <X> X invokeCAPI(X object, String fields) throws Exception {
+		return invokeCAPI(object, fields, null);
+	}
+
+	public <X> X invokeCAPI(X object, Map<String, String> pathVariables) throws Exception {
+		return invokeCAPI(object, null, pathVariables);
+	}
+
+	public <X> X invokeCAPI(X object, String fields, Map<String, String> pathVariables) throws Exception {
+		Call<X> request = getCAPI().method(object);
+		request.setHeader("Authorization", getAuthorization());
+		if (fields != null) {
+			request.withFields(fields.split(","));
+		}
+		if (pathVariables != null) {
+			for (Map.Entry<String, String> entry : pathVariables.entrySet()) {
+				request.setPathVariable(entry.getKey(), entry.getValue());
+			}
+		}
+		X response = null;
+		try {
+			response = request.execute().cast();
+		} catch (JsonedException e) {
+			if (e.getStatusCode() == 401) {
+				this.authentication();
+				try {
+					response = request.execute().cast();
+				} catch (JsonedException ie) {
+					log.severe("Cannot refresh authorization token!");
+					throw new Exception("Cannot refresh authorization token!");
+				}
+			} else {
+				log.severe("Cannot invoke server!");
+				throw new Exception("Cannot invoke server!");
+			}
+		}
+		return response;
+	}
+
+	private void authentication() {
+		log.info("Generate Authentication token...");
+		String auth = "Etalia_" + getProperty(PROP_USER) + ":" + new Digester().md5(getProperty(PROP_PASSWORD)).toBase64UrlSafeNoPad();
+		user = cApi.method(cApi.service().authUser(auth)).withFields("id", "extraData")
+						.setHeader("Authorization", auth).execute().cast();
+		log.info("Authentication done!");
 	}
 }

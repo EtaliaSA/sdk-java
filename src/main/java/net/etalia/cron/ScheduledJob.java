@@ -80,16 +80,14 @@ public class ScheduledJob implements Runnable {
 						media.setHeight(Long.parseLong(response.get("height").toString()));
 						media.setWidth(Long.parseLong(response.get("width").toString()));
 					}
-					article = imp.getCAPI().method(imp.getCAPI().service().addArticle(article)).withFields("id")
-									.setHeader("Authorization", imp.getAuthorization()).execute().cast();
+					article = imp.invokeCAPI(imp.getCAPI().service().addArticle(article), "id");
 					log.fine("Article: " + article.getId());
 					if (stampId != null) {
 						Map<String, String> stamp = new HashMap<String, String>();
 						stamp.put("id", stampId);
 						stamp.put("article", article.getId());
-						imp.getCAPI().method(imp.getCAPI().service().addStampArticle(stamp))
-									.setPathVariable("userId", imp.getUser().getId())
-									.setHeader("Authorization", imp.getAuthorization()).execute().cast();
+						imp.invokeCAPI(imp.getCAPI().service().addStampArticle(stamp),
+								new HashMap<String, String>().put("userId", imp.getUser().getId()));
 					}
 					if (file.delete()) {
 						// Remove images
