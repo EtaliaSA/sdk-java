@@ -86,8 +86,9 @@ public class ScheduledJob implements Runnable {
 						Map<String, String> stamp = new HashMap<String, String>();
 						stamp.put("id", stampId);
 						stamp.put("article", article.getId());
-						imp.invokeCAPI(imp.getCAPI().service().addStampArticle(stamp),
-								new HashMap<String, String>().put("userId", imp.getUser().getId()));
+						Map<String, String> pathVariables = new HashMap<String, String>();
+						pathVariables.put("userId", imp.getUser().getId());
+						imp.invokeCAPI(imp.getCAPI().service().addStampArticle(stamp), pathVariables);
 					}
 					if (file.delete()) {
 						// Remove images
