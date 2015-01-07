@@ -14,6 +14,12 @@ public class User extends Entity {
 	private Media cover;
 	private String visibleTitle;
 
+	// Boolean to handle field visibility
+	private Boolean showFullname;
+	private Boolean showGender;
+	private Boolean showBirthdate;
+	private Boolean showEmail;
+
 	public String getFirstname() {
 		return firstname;
 	}
@@ -79,6 +85,31 @@ public class User extends Entity {
 	}
 	public void setVisibleTitle(String visibleTitle) {
 		this.visibleTitle = visibleTitle;
+	}
+
+	public Boolean getShowBirthdate() {
+		return this.showBirthdate;
+	}
+	public void setShowBirthdate(Boolean showBirthdate) {
+		this.showBirthdate = showBirthdate;
+	}
+	public Boolean getShowEmail() {
+		return this.showEmail;
+	}
+	public void setShowEmail(Boolean showEmail) {
+		this.showEmail = showEmail;
+	}
+	public Boolean getShowGender() {
+		return this.showGender;
+	}
+	public void setShowGender(Boolean showGender) {
+		this.showGender = showGender;
+	}
+	public Boolean getShowFullname() {
+		return this.showFullname;
+	}
+	public void setShowFullname(Boolean showFullname) {
+		this.showFullname = showFullname;
 	}
 
 	public enum UserGender {
