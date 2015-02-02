@@ -82,6 +82,9 @@ public interface ContentApi {
 	@RequestMapping(value="/token/changeEmail", method=RequestMethod.PUT)
 	public @ResponseBody @ResponseStatus(HttpStatus.NO_CONTENT) void changeEmail(@RequestBody Map<String, String> data);
 
+	@RequestMapping(value="/user/{userId}/fb", method=RequestMethod.DELETE)
+	public @ResponseStatus(HttpStatus.NO_CONTENT) void removeFacebookUser(@PathVariable(value="userId") String userId);
+
 	// ========== ARTICLE ==========
 
 	/**
